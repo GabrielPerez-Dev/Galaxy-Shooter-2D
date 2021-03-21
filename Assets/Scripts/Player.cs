@@ -34,14 +34,9 @@ public class Player : MonoBehaviour
 
     private void VerticalScreenBounds()
     {
-        if (transform.position.y >= BoundY)
-        {
-            transform.position = new Vector3(transform.position.x, BoundY, 0);
-        }
-        else if (transform.position.y <= -BoundY)
-        {
-            transform.position = new Vector3(transform.position.x, -BoundY, 0);
-        }
+        var clampYpos = Mathf.Clamp(transform.position.y, -BoundY, BoundY);
+
+        transform.position = new Vector3(transform.position.x, clampYpos, 0);
     }
 
     private void PlayerMovement()
