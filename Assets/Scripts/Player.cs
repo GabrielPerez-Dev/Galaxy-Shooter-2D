@@ -14,28 +14,12 @@ public class Player : MonoBehaviour
     private void Update()
     {
         PlayerMovement();
+        VerticalScreenBounds();
+        HorizontalScreenWrap();
+    }
 
-        //Create player bounds on the Y axis
-        //if position y is greater than 6.5
-        //then position y = 6.5
-        //else if position y is less than -6.5
-        //then position y = -6.5
-
-        if (transform.position.y >= 6.5f)
-        {
-            transform.position = new Vector3(transform.position.x, 6.5f, 0);
-        }
-        else if (transform.position.y <= -6.5)
-        {
-            transform.position = new Vector3(transform.position.x, -6.5f, 0);
-        }
-
-        //Spawn/Wrap player position x when bounding on the x axis
-        //if position x >= 13f
-        //then position x = -13f;
-        //if position x <= -13f
-        //then position x = -13f
-
+    private void HorizontalScreenWrap()
+    {
         if (transform.position.x >= 13f)
         {
             transform.position = new Vector3(-13f, transform.position.y, 0);
@@ -43,6 +27,18 @@ public class Player : MonoBehaviour
         else if (transform.position.x <= -13f)
         {
             transform.position = new Vector3(13f, transform.position.y, 0);
+        }
+    }
+
+    private void VerticalScreenBounds()
+    {
+        if (transform.position.y >= 6.5f)
+        {
+            transform.position = new Vector3(transform.position.x, 6.5f, 0);
+        }
+        else if (transform.position.y <= -6.5)
+        {
+            transform.position = new Vector3(transform.position.x, -6.5f, 0);
         }
     }
 
