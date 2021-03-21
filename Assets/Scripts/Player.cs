@@ -13,6 +13,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        PlayerMovement();
+    }
+
+    private void PlayerMovement()
+    {
         float xInput = Input.GetAxisRaw("Horizontal");
         float yInput = Input.GetAxisRaw("Vertical");
 
