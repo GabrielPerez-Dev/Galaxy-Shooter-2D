@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _speed = 3.5f;
+    private const float BoundY = 6.5f;
+    private const float WrapX = 13f;
 
     private void Start()
     {
@@ -20,25 +22,25 @@ public class Player : MonoBehaviour
 
     private void HorizontalScreenWrap()
     {
-        if (transform.position.x >= 13f)
+        if (transform.position.x >= WrapX)
         {
-            transform.position = new Vector3(-13f, transform.position.y, 0);
+            transform.position = new Vector3(-WrapX, transform.position.y, 0);
         }
-        else if (transform.position.x <= -13f)
+        else if (transform.position.x <= -WrapX)
         {
-            transform.position = new Vector3(13f, transform.position.y, 0);
+            transform.position = new Vector3(WrapX, transform.position.y, 0);
         }
     }
 
     private void VerticalScreenBounds()
     {
-        if (transform.position.y >= 6.5f)
+        if (transform.position.y >= BoundY)
         {
-            transform.position = new Vector3(transform.position.x, 6.5f, 0);
+            transform.position = new Vector3(transform.position.x, BoundY, 0);
         }
-        else if (transform.position.y <= -6.5)
+        else if (transform.position.y <= -BoundY)
         {
-            transform.position = new Vector3(transform.position.x, -6.5f, 0);
+            transform.position = new Vector3(transform.position.x, -BoundY, 0);
         }
     }
 
