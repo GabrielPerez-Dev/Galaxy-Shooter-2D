@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _speed = 3.5f;
+    [SerializeField] private GameObject _projectilePrefab = null;
     private const float BoundY = 6.5f;
     private const float WrapX = 13f;
 
@@ -18,6 +17,11 @@ public class Player : MonoBehaviour
         PlayerMovement();
         VerticalScreenBounds();
         HorizontalScreenWrap();
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Instantiate(_projectilePrefab, transform.position, Quaternion.identity);
+        }
     }
 
     private void HorizontalScreenWrap()
