@@ -3,6 +3,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _speed = 3.5f;
+    [SerializeField] private float _fireRate = 0.5f;
     [SerializeField] private GameObject _projectilePrefab = null;
     private const float BoundY = 6.5f;
     private const float WrapX = 13f;
@@ -18,9 +19,10 @@ public class Player : MonoBehaviour
         VerticalScreenBounds();
         HorizontalScreenWrap();
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(_projectilePrefab, transform.position, Quaternion.identity);
+            Vector3 offsetY = new Vector3(0, 1f, 0);
+            Instantiate(_projectilePrefab, transform.position + offsetY, Quaternion.identity);
         }
     }
 
