@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private int _lives = 3;
     [SerializeField] private float _speed = 3.5f;
     [SerializeField] private float _fireRate = 0.15f;
     [SerializeField] private GameObject _projectilePrefab = null;
@@ -63,5 +64,16 @@ public class Player : MonoBehaviour
         Vector3 movement = new Vector3(xInput, yInput, 0);
 
         transform.Translate(movement.normalized * _speed * Time.deltaTime);
+    }
+
+    public void Damage(int damageAmount)
+    {
+        _lives -= damageAmount;
+
+        if (_lives <= 0)
+        {
+            _lives = 0;
+            Destroy(gameObject);
+        }
     }
 }
