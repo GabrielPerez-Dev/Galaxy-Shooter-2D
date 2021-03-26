@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
+    [SerializeField] private int giveDamage = 1;
 
     private void Update()
     {
@@ -24,7 +25,7 @@ public class Enemy : MonoBehaviour
             Player player = other.transform.GetComponent<Player>();
 
             if(player != null)
-                player.Damage(1);
+                player.Damage(giveDamage);
 
             Destroy(gameObject);
         }

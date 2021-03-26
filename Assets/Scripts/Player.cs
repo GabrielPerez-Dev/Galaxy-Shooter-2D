@@ -6,9 +6,19 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed = 3.5f;
     [SerializeField] private float _fireRate = 0.15f;
     [SerializeField] private GameObject _projectilePrefab = null;
+    private SpawnManager _spawnManager = null;
     private float _canFire = 0f;
+    private bool isDead = false;
     private const float BoundY = 6.5f;
     private const float WrapX = 13f;
+
+    private void Awake()
+    {
+        _spawnManager = GameObject.Find("[Spawn_Manager]").GetComponent<SpawnManager>();
+
+        if(_spawnManager == null)
+            Debug.Log("SpawnManager is null");
+    }
 
     private void Start()
     {
@@ -72,6 +82,8 @@ public class Player : MonoBehaviour
 
         if (_lives <= 0)
         {
+            isDead = true;
+            _spawnManager.StopSpawning();
             _lives = 0;
             Destroy(gameObject);
         }
