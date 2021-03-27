@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _projectilePrefab = null;
     private SpawnManager _spawnManager = null;
     private float _canFire = 0f;
-    private bool isDead = false;
     private const float BoundY = 6.5f;
     private const float WrapX = 13f;
 
@@ -82,7 +81,6 @@ public class Player : MonoBehaviour
 
         if (_lives <= 0)
         {
-            isDead = true;
             _spawnManager.StopSpawning();
             _lives = 0;
             Destroy(gameObject);
