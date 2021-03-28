@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed = 3.5f;
     [SerializeField] private float _fireRate = 0.15f;
     [SerializeField] private GameObject _projectilePrefab = null;
+    [SerializeField] private GameObject _triplShotPrefab = null;
+    [SerializeField] private bool isTripleShotActive = false;
     private SpawnManager _spawnManager = null;
     private float _canFire = 0f;
     private const float BoundY = 6.5f;
@@ -43,7 +45,15 @@ public class Player : MonoBehaviour
         _canFire = Time.time + _fireRate;
 
         Vector3 offsetY = new Vector3(0, 1f, 0);
-        Instantiate(_projectilePrefab, transform.position + offsetY, Quaternion.identity);
+
+        if (isTripleShotActive)
+        {
+            Instantiate(_triplShotPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_projectilePrefab, transform.position + offsetY, Quaternion.identity);
+        }
     }
 
     private void HorizontalScreenWrap()
