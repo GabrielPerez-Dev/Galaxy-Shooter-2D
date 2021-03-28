@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour
@@ -20,6 +18,13 @@ public class PowerUp : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            var player = other.transform.GetComponent<Player>();
+
+            if(player != null)
+            {
+                player.TripleShotActive();
+            }
+
             Destroy(gameObject);
         }
     }

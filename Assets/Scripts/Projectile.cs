@@ -10,7 +10,10 @@ public class Projectile : MonoBehaviour
 
         if(transform.position.y >= 8f)
         {
-            Destroy(gameObject);
+            if (transform.parent)
+                Destroy(transform.parent.gameObject);
+            else
+                Destroy(gameObject);
         }
     }
 }

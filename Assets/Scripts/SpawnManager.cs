@@ -4,16 +4,18 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab = null;
+    [SerializeField] private GameObject _tripleShotPowerupPrefab = null;
     [SerializeField] private GameObject _enemyContainer = null;
     [SerializeField] private float _spawnTime = 5f;
     private bool _stopSpawning = false;
 
     private void Start()
     {
-        StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnPowerUpRoutine());
     }
 
-    private IEnumerator SpawnRoutine()
+    private IEnumerator SpawnEnemyRoutine()
     {
         while (!_stopSpawning)
         {
@@ -25,6 +27,20 @@ public class SpawnManager : MonoBehaviour
             enemyInstance.transform.parent = _enemyContainer.transform;
 
             yield return new WaitForSeconds(_spawnTime);
+        }
+    }
+
+    private IEnumerator SpawnPowerUpRoutine()
+    {
+        while (!_stopSpawning)
+        {
+            float randomX = Random.Range(-11, 11);
+            Vector3 randonXposition = new Vector3(randomX, 8, 0);
+
+            Instantiate(_tripleShotPowerupPrefab, randonXposition, Quaternion.identity);
+
+            float randomTime = Random.Range(6, 20);
+            yield return new WaitForSeconds(randomTime);
         }
     }
 
