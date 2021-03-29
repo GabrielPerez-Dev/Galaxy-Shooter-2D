@@ -4,7 +4,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab = null;
-    [SerializeField] private GameObject _tripleShotPowerupPrefab = null;
+    [SerializeField] private GameObject[] _powerupPrefabs = null;
     [SerializeField] private GameObject _enemyContainer = null;
     [SerializeField] private float _spawnTime = 5f;
     private bool _stopSpawning = false;
@@ -37,7 +37,8 @@ public class SpawnManager : MonoBehaviour
             float randomX = Random.Range(-11, 11);
             Vector3 randonXposition = new Vector3(randomX, 8, 0);
 
-            Instantiate(_tripleShotPowerupPrefab, randonXposition, Quaternion.identity);
+            int randomPowerUp = Random.Range(0, _powerupPrefabs.Length);
+            Instantiate(_powerupPrefabs[randomPowerUp], randonXposition, Quaternion.identity);
 
             float randomTime = Random.Range(6, 20);
             yield return new WaitForSeconds(randomTime);

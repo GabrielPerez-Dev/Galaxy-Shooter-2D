@@ -1,7 +1,16 @@
 using UnityEngine;
 
+public enum PowerupType 
+{ 
+    None, 
+    TripleShot, 
+    Speed, 
+    Shield 
+}
+
 public class PowerUp : MonoBehaviour
 {
+    [SerializeField] private PowerupType _powerupType = PowerupType.None;
     [SerializeField] private float _speed = 3f;
 
     private void Update()
@@ -22,7 +31,21 @@ public class PowerUp : MonoBehaviour
 
             if(player != null)
             {
-                player.TripleShotActive();
+                switch (_powerupType)
+                {
+                    case PowerupType.TripleShot:
+                        player.TripleShotActive();
+                        break;
+                    case PowerupType.Speed:
+                        player.SpeedBoostActive();
+                        break;
+                    case PowerupType.Shield:
+                        player.ShieldActive();
+                        break;
+                    default:
+                        _powerupType = PowerupType.None;
+                        break;
+                }
             }
 
             Destroy(gameObject);
