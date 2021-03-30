@@ -17,11 +17,16 @@ public class GameManager : MonoBehaviour
 
     public void RestartScene()
     {
-        SceneManager.LoadScene(0); //Game scene
+        SceneManager.LoadScene(1); //Game scene
     }
 
     public void GameOver()
     {
         _isGameOver = true;
+    }
+
+    public void NewGame()
+    {
+        SceneManager.LoadScene(1);
     }
 }
