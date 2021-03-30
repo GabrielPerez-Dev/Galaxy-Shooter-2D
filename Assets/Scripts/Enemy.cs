@@ -4,6 +4,13 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
     [SerializeField] private int giveDamage = 1;
+    [SerializeField] private int _givePoints = 10;
+    private Player _player;
+
+    private void Awake()
+    {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+    }
 
     private void Update()
     {
@@ -18,12 +25,22 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        
+
         if (other.gameObject.CompareTag("Player"))
         {
             Player player = other.transform.GetComponent<Player>();
 
-            if(player != null)
+            if (player != null)
+            {
                 player.Damage(giveDamage);
+                player.AddScore(-10);
+
+                if(player.GetScore() <= 0)
+                {
+                    player.SetScore(0);
+                }
+            }
 
             Destroy(gameObject);
         }
@@ -31,6 +48,10 @@ public class Enemy : MonoBehaviour
         if (other.gameObject.CompareTag("Projectile"))
         {
             Destroy(other.gameObject);
+
+            if (_player != null)
+                _player.AddScore(_givePoints);
+
             Destroy(gameObject);
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int _lives = 3;
+    [SerializeField] private int _score = 0;
     [SerializeField] private float _speed = 3.5f;
     [SerializeField] private float _speedBoostAmount = 5f;
     [SerializeField] private float _fireRate = 0.15f;
@@ -24,7 +25,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        _spawnManager = GameObject.Find("[Spawn_Manager]").GetComponent<SpawnManager>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 
         if(_spawnManager == null)
             Debug.Log("SpawnManager is null");
@@ -48,8 +49,6 @@ public class Player : MonoBehaviour
         {
             Shoot();
         }
-
-        Debug.Log(_canFire);
     }
 
     private void Shoot()
@@ -152,5 +151,20 @@ public class Player : MonoBehaviour
     {
         _isShieldActive = true;
         _shieldPrefab.SetActive(true);
+    }
+
+    public void AddScore(int amount)
+    {
+        _score += amount;
+    }
+
+    public void SetScore(int amount)
+    {
+        _score = amount;
+    }
+
+    public int GetScore()
+    {
+        return _score;
     }
 }
