@@ -167,4 +167,9 @@ public class Player : MonoBehaviour
     {
         return _score;
     }
+
+    public int GetLives()
+    {
+        return _lives;
+    }
 }
