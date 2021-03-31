@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     private bool _isTripleShotActive = false;
     private bool _isSpeedBoostActive = false;
     private bool _isShieldActive = false;
+    private bool _isDead = false;
+
 
     private SpawnManager _spawnManager = null;
     private float _canFire = 0f;
@@ -109,6 +111,7 @@ public class Player : MonoBehaviour
 
         if (_lives <= 0)
         {
+            _isDead = true;
             _spawnManager.StopSpawning();
             _lives = 0;
             Destroy(gameObject);
@@ -171,5 +174,10 @@ public class Player : MonoBehaviour
     public int GetLives()
     {
         return _lives;
+    }
+
+    public bool IsDead()
+    {
+        return _isDead;
     }
 }

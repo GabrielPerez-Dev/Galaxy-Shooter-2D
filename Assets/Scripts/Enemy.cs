@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
 
         if(transform.position.y < -8f)
         {
+            if (_player.IsDead()) return;
+
             float randomXposition = Random.Range(-11, 11);
             transform.position = new Vector3(randomXposition, 8f, 0);
         }
