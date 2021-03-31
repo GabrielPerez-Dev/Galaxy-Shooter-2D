@@ -7,7 +7,14 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject[] _powerupPrefabs = null;
     [SerializeField] private GameObject _enemyContainer = null;
     [SerializeField] private float _spawnTime = 5f;
+
+    private UIManager uiManager = null;
     private bool _stopSpawning = false;
+
+    private void Awake()
+    {
+        uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+    }
 
     private void Start()
     {
@@ -17,6 +24,11 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnEnemyRoutine()
     {
+        if (uiManager.IsNewScene())
+        {
+            yield return new WaitForSeconds(4f);
+        }
+
         while (!_stopSpawning)
         {
             float randomX = Random.Range(-11, 11);
@@ -32,6 +44,11 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnPowerUpRoutine()
     {
+        if (uiManager.IsNewScene())
+        {
+            yield return new WaitForSeconds(4f);
+        }
+
         while (!_stopSpawning)
         {
             float randomX = Random.Range(-11, 11);

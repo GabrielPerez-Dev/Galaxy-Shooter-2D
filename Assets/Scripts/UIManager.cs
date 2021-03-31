@@ -9,8 +9,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText = null;
     [SerializeField] private TextMeshProUGUI _gameOverText = null;
     [SerializeField] private TextMeshProUGUI _restartText = null;
+    [SerializeField] private TextMeshProUGUI _sceneStartText = null;
     [SerializeField] private Image _livesImg = null;
     [SerializeField] private Sprite[] _livesSprites = null;
+
+    private bool _isNewScene = true;
 
     private GameManager _gameManager;
     private Player _player = null;
@@ -26,6 +29,11 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        _sceneStartText.gameObject.SetActive(true);
+
+        if(_isNewScene)
+            StartCoroutine(StartSceneTimerRoutine());
+
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
     }
@@ -46,5 +54,26 @@ public class UIManager : MonoBehaviour
         _gameManager.GameOver();
         _gameOverText.gameObject.SetActive(true);
         _restartText.gameObject.SetActive(true);
+    }
+
+    private IEnumerator StartSceneTimerRoutine()
+    {
+        _sceneStartText.text = "1";
+        yield return new WaitForSeconds(1f);
+        _sceneStartText.text = "2";
+        yield return new WaitForSeconds(1f);
+        _sceneStartText.text = "3";
+        yield return new WaitForSeconds(1f);
+        _sceneStartText.fontSize = 120;
+        _sceneStartText.text = "GO!";
+        yield return new WaitForSeconds(1f);
+        _sceneStartText.gameObject.SetActive(false);
+
+        _isNewScene = false;
+    }
+
+    public bool IsNewScene()
+    {
+        return _isNewScene;
     }
 }
