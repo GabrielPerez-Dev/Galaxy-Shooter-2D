@@ -13,8 +13,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image _livesImg = null;
     [SerializeField] private Sprite[] _livesSprites = null;
 
-    private bool _isNewScene = true;
-
     private GameManager _gameManager;
     private Player _player = null;
 
@@ -31,7 +29,7 @@ public class UIManager : MonoBehaviour
     {
         _sceneStartText.gameObject.SetActive(true);
 
-        if(_isNewScene)
+        if(_gameManager.IsNewScene(true))
             StartCoroutine(StartSceneTimerRoutine());
 
         _gameOverText.gameObject.SetActive(false);
@@ -69,11 +67,6 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         _sceneStartText.gameObject.SetActive(false);
 
-        _isNewScene = false;
-    }
-
-    public bool IsNewScene()
-    {
-        return _isNewScene;
+        _gameManager.IsNewScene(false);
     }
 }

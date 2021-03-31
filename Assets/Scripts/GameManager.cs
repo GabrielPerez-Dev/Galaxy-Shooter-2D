@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private bool _isGameOver = false;
+    private bool _isNewScene = true;
 
     private void Update()
     {
@@ -28,5 +29,11 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public bool IsNewScene(bool isNewScene)
+    {
+        _isNewScene = isNewScene;
+        return _isNewScene;
     }
 }
