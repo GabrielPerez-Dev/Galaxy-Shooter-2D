@@ -25,7 +25,7 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnEnemyRoutine()
     {
-        if (_gameManager.IsNewScene(true))
+        if (_gameManager.IsNewScene)
         {
             yield return new WaitForSeconds(_waitToSpawn);
         }
@@ -45,7 +45,7 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnPowerUpRoutine()
     {
-        if (_gameManager.IsNewScene(true))
+        if (_gameManager.IsNewScene)
         {
             yield return new WaitForSeconds(_waitToSpawn);
         }

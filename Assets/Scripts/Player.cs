@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _laserPrefab = null;
     [SerializeField] private GameObject _triplShotPrefab = null;
     [SerializeField] private GameObject _shieldPrefab = null;
+    [SerializeField] private GameObject[] _enginePrefabs = null;
 
     private bool _isTripleShotActive = false;
     private bool _isSpeedBoostActive = false;
@@ -108,6 +109,11 @@ public class Player : MonoBehaviour
         }
 
         _lives -= damageAmount;
+
+        if (_lives == 2)
+            _enginePrefabs[0].SetActive(true);
+        else if (_lives == 1)
+            _enginePrefabs[1].SetActive(true);
 
         if (_lives <= 0)
         {

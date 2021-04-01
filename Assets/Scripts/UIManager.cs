@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     {
         _sceneStartText.gameObject.SetActive(true);
 
-        if(_gameManager.IsNewScene(true))
+        if(_gameManager.IsNewScene)
             StartCoroutine(StartSceneTimerRoutine());
 
         _gameOverText.gameObject.SetActive(false);
@@ -69,6 +69,6 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         _sceneStartText.gameObject.SetActive(false);
 
-        _gameManager.IsNewScene(false);
+        _gameManager.IsNewScene = false;
     }
 }
