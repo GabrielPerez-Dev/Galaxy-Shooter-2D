@@ -10,6 +10,7 @@ public class SpawnManager : MonoBehaviour
 
     private GameManager _gameManager = null;
     private bool _stopSpawning = false;
+    private float _waitToSpawn = 5f;
 
     private void Awake()
     {
@@ -26,7 +27,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (_gameManager.IsNewScene(true))
         {
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(_waitToSpawn);
         }
 
         while (!_stopSpawning)
@@ -46,7 +47,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (_gameManager.IsNewScene(true))
         {
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(_waitToSpawn);
         }
 
         while (!_stopSpawning)

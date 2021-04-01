@@ -56,6 +56,8 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator StartSceneTimerRoutine()
     {
+        _sceneStartText.text = "";
+        yield return new WaitForSeconds(1f);
         _sceneStartText.text = "1";
         yield return new WaitForSeconds(1f);
         _sceneStartText.text = "2";

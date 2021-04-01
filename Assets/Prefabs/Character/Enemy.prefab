@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8949856863056425138}
   - component: {fileID: 2409556169198668899}
   - component: {fileID: 3439180666056679983}
+  - component: {fileID: 6510429090600265186}
   m_Layer: 0
   m_Name: EnemySprite
   m_TagString: Untagged
@@ -79,6 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 4
   giveDamage: 1
+  _givePoints: 10
 --- !u!212 &8949856863056425138
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -167,3 +169,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &6510429090600265186
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514612249216493610}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e3e22a0cac6f40546999e62927a5cdd9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

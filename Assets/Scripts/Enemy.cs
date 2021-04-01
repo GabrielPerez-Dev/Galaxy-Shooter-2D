@@ -5,11 +5,18 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _speed = 4f;
     [SerializeField] private int giveDamage = 1;
     [SerializeField] private int _givePoints = 10;
-    private Player _player;
+    private Animator _animator = null;
+    private Player _player = null;
 
     private void Awake()
     {
+        _animator = GetComponent<Animator>();
+        if (_animator == null) 
+            Debug.LogError("The Animator is NULL");
+
         _player = GameObject.Find("Player").GetComponent<Player>();
+        if (_player == null) 
+            Debug.LogError("The Player is NULL");
     }
 
     private void Update()
@@ -44,7 +51,9 @@ public class Enemy : MonoBehaviour
                 }
             }
 
-            Destroy(gameObject);
+            _animator.SetTrigger("isDestroyed");
+            _speed = 1f;
+            Destroy(gameObject, 2.3f);
         }
 
         if (other.gameObject.CompareTag("Projectile"))
@@ -54,7 +63,9 @@ public class Enemy : MonoBehaviour
             if (_player != null)
                 _player.AddScore(_givePoints);
 
-            Destroy(gameObject);
+            _animator.SetTrigger("isDestroyed");
+            _speed = 1f;
+            Destroy(gameObject, 2.3f);
         }
     }
 }
