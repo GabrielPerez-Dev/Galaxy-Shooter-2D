@@ -5,6 +5,7 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab = null;
     [SerializeField] private GameObject[] _powerupPrefabs = null;
+    [SerializeField] private GameObject[] _asteroidPrefabs = null;
     [SerializeField] private GameObject _enemyContainer = null;
     [SerializeField] private float _spawnTime = 5f;
 
@@ -21,6 +22,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
+        StartCoroutine(SpawnAsteroidRoutine());
     }
 
     private IEnumerator SpawnEnemyRoutine()
@@ -57,6 +59,26 @@ public class SpawnManager : MonoBehaviour
 
             int randomPowerUp = Random.Range(0, _powerupPrefabs.Length);
             Instantiate(_powerupPrefabs[randomPowerUp], randonXposition, Quaternion.identity);
+
+            float randomTime = Random.Range(6, 20);
+            yield return new WaitForSeconds(randomTime);
+        }
+    }
+
+    private IEnumerator SpawnAsteroidRoutine()
+    {
+        if (_gameManager.IsNewScene)
+        {
+            yield return new WaitForSeconds(_waitToSpawn);
+        }
+
+        while (!_stopSpawning)
+        {
+            float randomX = Random.Range(-11, 11);
+            Vector3 randonXposition = new Vector3(randomX, 9, 0);
+
+            int randomAsteroid = Random.Range(0, _asteroidPrefabs.Length);
+            Instantiate(_asteroidPrefabs[randomAsteroid], randonXposition, Quaternion.identity);
 
             float randomTime = Random.Range(6, 20);
             yield return new WaitForSeconds(randomTime);

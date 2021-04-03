@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     {
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
-        if(transform.position.y >= 8f)
+        if(transform.position.y >= 7.5f)
         {
             if (transform.parent)
                 Destroy(transform.parent.gameObject);

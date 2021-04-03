@@ -19,6 +19,12 @@ public class Enemy : MonoBehaviour
             Debug.LogError("The Player is NULL");
     }
 
+    private void Start()
+    {
+        float randomValue = Random.Range(3f, 5f);
+        _speed = randomValue;
+    }
+
     private void Update()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -53,7 +59,7 @@ public class Enemy : MonoBehaviour
 
             _animator.SetTrigger("isDestroyed");
             _speed = 1f;
-            Destroy(gameObject, 2.3f);
+            Destroy(gameObject, 2f);
         }
 
         if (other.gameObject.CompareTag("Projectile"))
@@ -65,7 +71,7 @@ public class Enemy : MonoBehaviour
 
             _animator.SetTrigger("isDestroyed");
             _speed = 1f;
-            Destroy(gameObject, 2.3f);
+            Destroy(gameObject, 2f);
         }
     }
 }

@@ -46,8 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297699c1fac43c348a041e0d3d5e288b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotateSpeed: 20
+  _rotateSpeed: 18
+  _speed: 2
+  _childObject: {fileID: 4686921452069079478}
   _explosionPrefab: {fileID: 1675648454040300859, guid: 78b60b633b63fbd4cbbc7b6c99e65da3, type: 3}
+  _collider: {fileID: 4686921451695450844}
 --- !u!58 &4686921451695450844
 CircleCollider2D:
   m_ObjectHideFlags: 0

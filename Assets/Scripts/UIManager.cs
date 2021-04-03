@@ -58,11 +58,11 @@ public class UIManager : MonoBehaviour
     {
         _sceneStartText.text = "";
         yield return new WaitForSeconds(1f);
-        _sceneStartText.text = "1";
+        _sceneStartText.text = "3";
         yield return new WaitForSeconds(1f);
         _sceneStartText.text = "2";
         yield return new WaitForSeconds(1f);
-        _sceneStartText.text = "3";
+        _sceneStartText.text = "1";
         yield return new WaitForSeconds(1f);
         _sceneStartText.fontSize = 120;
         _sceneStartText.text = "GO!";
