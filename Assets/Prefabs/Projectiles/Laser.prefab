@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4764b101bb6056146b1c10e3442786ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isEnemyLaser: 0
   _speed: 8
 --- !u!61 &4579988080802475971
 BoxCollider2D:
@@ -166,7 +167,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b030d335857201646be69703e678d6e5, type: 3}
-  m_Color: {r: 0.9713347, g: 0.6556604, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.41037738, b: 0.683162, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

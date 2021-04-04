@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _sceneStartText = null;
     [SerializeField] private Image _livesImg = null;
     [SerializeField] private Sprite[] _livesSprites = null;
+    [SerializeField] private GameObject _pausePanel = null;
 
     private GameManager _gameManager;
     private Player _player = null;
@@ -27,6 +28,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        _pausePanel.SetActive(false);
         _sceneStartText.gameObject.SetActive(true);
 
         if(_gameManager.IsNewScene)
@@ -70,5 +72,10 @@ public class UIManager : MonoBehaviour
         _sceneStartText.gameObject.SetActive(false);
 
         _gameManager.IsNewScene = false;
+    }
+
+    public void PausePanel(bool activate)
+    {
+        _pausePanel.SetActive(activate);
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5245039252517151995}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,10 +79,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f1b3458d19608140b0300efe514603b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _laserPrefab: {fileID: 4409351582167839357, guid: 6556739197114b64d856555b21e9f8f5, type: 3}
   _speed: 3.5
   giveDamage: 1
   _givePoints: 10
-  _explosionSound: {fileID: 0}
+  _collider: {fileID: 2409556169198668899}
 --- !u!212 &8949856863056425138
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -147,8 +148,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.64, y: 2.25}
+  m_Offset: {x: 0, y: 0.42473263}
+  m_Size: {x: 1.6400002, y: 1.9668459}
   m_Direction: 0
 --- !u!50 &3439180666056679983
 Rigidbody2D:

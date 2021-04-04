@@ -1,14 +1,20 @@
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private GameObject _laserPrefab = null;
     [SerializeField] private float _speed = 4f;
     [SerializeField] private int giveDamage = 1;
     [SerializeField] private int _givePoints = 10;
+    [SerializeField] private Collider2D _collider = null;
 
     private AudioManager _audioManager = null;
     private Animator _animator = null;
     private Player _player = null;
+
+    private float _fireRate = 3.0f;
+    private float _canFire = -1f;
 
     private void Awake()
     {
@@ -33,9 +39,29 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        Movement();
+
+        if(Time.time > _canFire)
+        {
+            _fireRate = Random.Range(3f, 6f);
+            _canFire = Time.time + _fireRate;
+
+            Vector3 offsetY = new Vector3(0, -1f, 0);
+            var enemeyLaser = Instantiate(_laserPrefab, transform.position + offsetY, Quaternion.identity);
+            Projectile[] lasers = enemeyLaser.GetComponentsInChildren<Projectile>();
+
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].IsEnemyLaser();
+            }
+        }
+    }
+
+    private void Movement()
+    {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        if(transform.position.y < -8f)
+        if (transform.position.y < -8f)
         {
             if (_player.IsDead()) return;
 
@@ -77,7 +103,15 @@ public class Enemy : MonoBehaviour
             _animator.SetTrigger("isDestroyed");
             _speed = 1f;
             _audioManager.PlayExplosionSound();
+
+            _collider.enabled = false;
+
             Destroy(gameObject, 2f);
+        }
+
+        if(other.gameObject.CompareTag("Enemy Projectile"))
+        {
+            return;
         }
     }
 }
