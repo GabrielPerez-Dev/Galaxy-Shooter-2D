@@ -16,16 +16,29 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject[]   _enginePrefabs      = null;
 
     private bool _isTripleShotActive    = false;
-    private bool _isSpeedBoostActive    = false;
     private bool _isShieldActive        = false;
     private bool _isDead                = false;
 
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
     private float           _canFire        = 0f;
-
     private const float     BoundY  = 6.5f;
     private const float     WrapX   = 13f;
+
+    public int Lives
+    {
+        get { return _lives; }
+        set
+        {
+            _lives = value;
+
+            if (_lives >= 3)
+                _lives = 3;
+
+            if (_lives <= 0)
+                _lives = 0;
+        }
+    }
 
     private void Awake()
     {
@@ -135,6 +148,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void HealthActive()
+    {
+        Lives += 1;
+    }
+
     public void TripleShotActive()
     {
         _isTripleShotActive = true;
@@ -151,8 +169,6 @@ public class Player : MonoBehaviour
 
     public void SpeedBoostActive()
     {
-        _isSpeedBoostActive = true;
-
         _speed += _speedBoostAmount;
 
         StartCoroutine(SpeedBoostPowerDownRoutine());
@@ -163,8 +179,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(_powerDownTime);
 
         _speed -= _speedBoostAmount;
-
-        _isSpeedBoostActive = false;
     }
 
     public void ShieldActive()

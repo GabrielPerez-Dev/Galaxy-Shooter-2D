@@ -5,7 +5,8 @@ public enum PowerupType
     None, 
     TripleShot, 
     Speed, 
-    Shield 
+    Shield,
+    Health
 }
 
 public class PowerUp : MonoBehaviour
@@ -48,6 +49,9 @@ public class PowerUp : MonoBehaviour
                         break;
                     case PowerupType.Shield:
                         player.ShieldActive();
+                        break;
+                    case PowerupType.Health:
+                        player.HealthActive();
                         break;
                     default:
                         _powerupType = PowerupType.None;

@@ -2134,6 +2134,7 @@ MonoBehaviour:
   - {fileID: 1852664805966231875, guid: e3a7c092b6da776419ff78447d4658b1, type: 3}
   - {fileID: 4824352780815562367, guid: eddd17450b8ba994ca5b4750fee294f9, type: 3}
   - {fileID: 6453831168382010556, guid: 0f93d4b4b70110b48b6673cc9d40a17d, type: 3}
+  - {fileID: 8440179884229992047, guid: 487612979a05e92479a39f9ff8e0fde9, type: 3}
   _asteroidPrefabs:
   - {fileID: 4686921451695450816, guid: d1b7d4df4d1f9fa44b7e9e6438f556fd, type: 3}
   _enemyContainer: {fileID: 1743790641}
