@@ -3,35 +3,38 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private int _lives = 3;
-    [SerializeField] private int _score = 0;
-    [SerializeField] private float _speed = 3.5f;
-    [SerializeField] private float _speedBoostAmount = 5f;
-    [SerializeField] private float _fireRate = 0.15f;
-    [SerializeField] private float powerDownTime = 5f;
-    [SerializeField] private GameObject _laserPrefab = null;
-    [SerializeField] private GameObject _triplShotPrefab = null;
-    [SerializeField] private GameObject _shieldPrefab = null;
-    [SerializeField] private GameObject[] _enginePrefabs = null;
+    [SerializeField] private int            _lives              = 3;
+    [SerializeField] private int            _score              = 0;
+    [SerializeField] private float          _speed              = 3.5f;
+    [SerializeField] private float          _speedBoostAmount   = 5f;
+    [SerializeField] private float          _fireRate           = 0.15f;
+    [SerializeField] private float          _powerDownTime      = 5f;
+    [SerializeField] private GameObject     _laserPrefab        = null;
+    [SerializeField] private GameObject     _triplShotPrefab    = null;
+    [SerializeField] private GameObject     _shieldPrefab       = null;
+    [SerializeField] private GameObject[]   _enginePrefabs      = null;
 
-    private bool _isTripleShotActive = false;
-    private bool _isSpeedBoostActive = false;
-    private bool _isShieldActive = false;
-    private bool _isDead = false;
+    private bool _isTripleShotActive    = false;
+    private bool _isSpeedBoostActive    = false;
+    private bool _isShieldActive        = false;
+    private bool _isDead                = false;
 
+    private AudioManager    _audioManager   = null;
+    private SpawnManager    _spawnManager   = null;
+    private float           _canFire        = 0f;
 
-    private SpawnManager _spawnManager = null;
-    private float _canFire = 0f;
-
-    private const float BoundY = 6.5f;
-    private const float WrapX = 13f;
+    private const float     BoundY  = 6.5f;
+    private const float     WrapX   = 13f;
 
     private void Awake()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
-
         if(_spawnManager == null)
             Debug.Log("SpawnManager is null");
+
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        if (_audioManager == null)
+            Debug.Log("AudioManager is null");
     }
 
     private void Start()
@@ -68,6 +71,8 @@ public class Player : MonoBehaviour
         {
             Instantiate(_laserPrefab, transform.position + offsetY, Quaternion.identity);
         }
+
+        _audioManager.PlayLaserSound();
     }
 
     private void HorizontalScreenWrap()
@@ -133,7 +138,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator TripleShotPowerDownRoutine()
     {
-        yield return new WaitForSeconds(powerDownTime);
+        yield return new WaitForSeconds(_powerDownTime);
 
         _isTripleShotActive = false;
     }
@@ -149,7 +154,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator SpeedBoostPowerDownRoutine()
     {
-        yield return new WaitForSeconds(powerDownTime);
+        yield return new WaitForSeconds(_powerDownTime);
 
         _speed -= _speedBoostAmount;
 

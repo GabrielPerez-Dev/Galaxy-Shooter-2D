@@ -13,6 +13,13 @@ public class PowerUp : MonoBehaviour
     [SerializeField] private PowerupType _powerupType = PowerupType.None;
     [SerializeField] private float _speed = 3f;
 
+    private AudioManager _audioManager = null;
+
+    private void Awake()
+    {
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+    }
+
     private void Update()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -47,6 +54,8 @@ public class PowerUp : MonoBehaviour
                         break;
                 }
             }
+
+            _audioManager.PlayPowerupSound();
 
             Destroy(gameObject);
         }

@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _speed = 4f;
     [SerializeField] private int giveDamage = 1;
     [SerializeField] private int _givePoints = 10;
+
+    private AudioManager _audioManager = null;
     private Animator _animator = null;
     private Player _player = null;
 
@@ -17,6 +19,10 @@ public class Enemy : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null) 
             Debug.LogError("The Player is NULL");
+
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        if (_audioManager == null)
+            Debug.LogError("AudioManager is null");
     }
 
     private void Start()
@@ -40,8 +46,6 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        
-
         if (other.gameObject.CompareTag("Player"))
         {
             Player player = other.transform.GetComponent<Player>();
@@ -59,6 +63,7 @@ public class Enemy : MonoBehaviour
 
             _animator.SetTrigger("isDestroyed");
             _speed = 1f;
+            _audioManager.PlayExplosionSound();
             Destroy(gameObject, 2f);
         }
 
@@ -71,6 +76,7 @@ public class Enemy : MonoBehaviour
 
             _animator.SetTrigger("isDestroyed");
             _speed = 1f;
+            _audioManager.PlayExplosionSound();
             Destroy(gameObject, 2f);
         }
     }
