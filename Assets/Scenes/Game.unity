@@ -1894,7 +1894,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832787895}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.87, z: 0}
+  m_LocalPosition: {x: 0, y: -3.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2081271746}
@@ -1923,6 +1923,7 @@ MonoBehaviour:
   _speedBoostAmount: 3
   _fireRate: 0.15
   _powerDownTime: 5
+  _ExplosionPrefab: {fileID: 2650851927687773958, guid: 378c907d198840e4fa37a825f300b701, type: 3}
   _laserPrefab: {fileID: 1370449868479395646, guid: 54cfd45195429d84492b41950b54be53, type: 3}
   _triplShotPrefab: {fileID: 1582960961906144069, guid: 389e3beb0cadde044a8a940356c4a6c7, type: 3}
   _shieldPrefab: {fileID: 583179804}

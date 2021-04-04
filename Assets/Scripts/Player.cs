@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float          _speedBoostAmount   = 5f;
     [SerializeField] private float          _fireRate           = 0.15f;
     [SerializeField] private float          _powerDownTime      = 5f;
+    [SerializeField] private GameObject     _ExplosionPrefab    = null;
     [SerializeField] private GameObject     _laserPrefab        = null;
     [SerializeField] private GameObject     _triplShotPrefab    = null;
     [SerializeField] private GameObject     _shieldPrefab       = null;
@@ -125,6 +126,11 @@ public class Player : MonoBehaviour
             _isDead = true;
             _spawnManager.StopSpawning();
             _lives = 0;
+
+            Instantiate(_ExplosionPrefab, transform.position, Quaternion.identity);
+
+            _audioManager.PlayExplosionSound();
+
             Destroy(gameObject);
         }
     }

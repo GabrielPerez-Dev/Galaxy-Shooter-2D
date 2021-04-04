@@ -43,6 +43,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
     public void RestartScene()
     {
         Time.timeScale = 1;
@@ -57,10 +62,5 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         SceneManager.LoadScene(1);
-    }
-
-    public void Quit()
-    {
-        Application.Quit();
     }
 }
