@@ -169,6 +169,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void AmmoActive()
+    {
+        _ammoCount = _maxAmmoCount;
+    }
+
     public void HealthActive()
     {
         Lives += 1;
@@ -177,6 +182,8 @@ public class Player : MonoBehaviour
     public void TripleShotActive()
     {
         _isTripleShotActive = true;
+
+        _ammoCount = _maxAmmoCount;
 
         StartCoroutine(TripleShotPowerDownRoutine());
     }
@@ -236,6 +243,11 @@ public class Player : MonoBehaviour
     public int GetMaxAmmo()
     {
         return _maxAmmoCount;
+    }
+
+    public void AddAmmo(int amount)
+    {
+        _ammoCount += amount;
     }
 
     public bool IsAmmoEmpty()

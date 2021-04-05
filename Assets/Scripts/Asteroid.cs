@@ -9,12 +9,17 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private Collider2D _collider = null;
 
     private AudioManager _audioManager = null;
+    private Player _player = null;
 
     private void Awake()
     {
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         if (_audioManager == null)
             Debug.LogError("AudioManager is null");
+
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        if (_player == null)
+            Debug.LogError("Player script is null");
     }
 
     private void Start()
@@ -35,6 +40,8 @@ public class Asteroid : MonoBehaviour
         {
             Vector3 offsetY = new Vector3(0, -1f, 0);
             Instantiate(_explosionPrefab, transform.position + offsetY, Quaternion.identity);
+
+            _player.AddScore(13);
 
             //Disable the Collider so we don't Instantiate the Explosion more than once.
             _collider.enabled = false;

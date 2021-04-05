@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private GameObject _laserPrefab = null;
-    [SerializeField] private float _speed = 4f;
-    [SerializeField] private int giveDamage = 1;
-    [SerializeField] private int _givePoints = 10;
-    [SerializeField] private Collider2D _collider = null;
+    [SerializeField] private GameObject _laserPrefab    = null;
+    [SerializeField] private float      _speed          = 4f;
+    [SerializeField] private int        _giveDamage     = 1;
+    [SerializeField] private int        _givePoints     = 10;
+    [SerializeField] private int        _giveAmmo       = 1;
+    [SerializeField] private Collider2D _collider       = null;
 
     private AudioManager _audioManager = null;
     private Animator _animator = null;
@@ -78,7 +79,7 @@ public class Enemy : MonoBehaviour
 
             if (player != null)
             {
-                player.Damage(giveDamage);
+                player.Damage(_giveDamage);
                 player.AddScore(-10);
 
                 if(player.GetScore() <= 0)
@@ -98,7 +99,10 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
 
             if (_player != null)
+            {
                 _player.AddScore(_givePoints);
+                _player.AddAmmo(_giveAmmo);
+            }
 
             _animator.SetTrigger("isDestroyed");
             _speed = 1f;
