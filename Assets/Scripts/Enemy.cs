@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        float randomValue = Random.Range(3f, 5f);
+        float randomValue = Random.Range(2.5f, 4f);
         _speed = randomValue;
     }
 

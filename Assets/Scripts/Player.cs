@@ -5,6 +5,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private int            _lives              = 3;
     [SerializeField] private int            _score              = 0;
+    [SerializeField] private int            _ammoCount          = 0;
+    [SerializeField] private int            _maxAmmoCount       = 15;
     [SerializeField] private float          _speed              = 3.5f;
     [SerializeField] private float          _speedBoostAmount   = 5f;
     [SerializeField] private float          _fireRate           = 0.15f;
@@ -18,6 +20,7 @@ public class Player : MonoBehaviour
     private bool _isTripleShotActive    = false;
     private bool _isShieldActive        = false;
     private bool _isDead                = false;
+    private bool _ammoEmpty             = false;
 
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
@@ -57,6 +60,8 @@ public class Player : MonoBehaviour
 
         if(_shieldPrefab != null)
             _shieldPrefab.SetActive(false);
+
+        _ammoCount = _maxAmmoCount;
     }
 
     private void Update()
@@ -73,20 +78,36 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
-        _canFire = Time.time + _fireRate;
+        if (_ammoCount == 0)
+        {
+            _ammoEmpty = true;
+            _ammoCount = 0;
+            _audioManager.PlayAmmoEmptySound();
 
-        Vector3 offsetY = new Vector3(0, 1f, 0);
+            return;
+        }
+        else
+        {
+            _ammoEmpty = false;
+        }
+
+        _ammoCount -= 1;
+
+        _canFire = Time.time + _fireRate;
 
         if (_isTripleShotActive)
         {
             Instantiate(_triplShotPrefab, transform.position, Quaternion.identity);
+
+            _audioManager.PlayTripleShotSound();
         }
         else
         {
+            Vector3 offsetY = new Vector3(0, 1f, 0);
             Instantiate(_laserPrefab, transform.position + offsetY, Quaternion.identity);
-        }
 
-        _audioManager.PlayLaserSound();
+            _audioManager.PlayLaserSound();
+        }
     }
 
     private void HorizontalScreenWrap()
@@ -205,6 +226,21 @@ public class Player : MonoBehaviour
     public int GetLives()
     {
         return _lives;
+    }
+
+    public int GetAmmo()
+    {
+        return _ammoCount;
+    }
+
+    public int GetMaxAmmo()
+    {
+        return _maxAmmoCount;
+    }
+
+    public bool IsAmmoEmpty()
+    {
+        return _ammoEmpty;
     }
 
     public bool IsDead()
