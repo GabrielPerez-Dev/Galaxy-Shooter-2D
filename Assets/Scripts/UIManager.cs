@@ -1,22 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _scoreText = null;
-    [SerializeField] private TextMeshProUGUI _gameOverText = null;
-    [SerializeField] private TextMeshProUGUI _restartText = null;
-    [SerializeField] private TextMeshProUGUI _sceneStartText = null;
-    [SerializeField] private TextMeshProUGUI _ammoText = null;
-    [SerializeField] private Image _livesImg = null;
-    [SerializeField] private Sprite[] _livesSprites = null;
-    [SerializeField] private GameObject _pausePanel = null;
+    [SerializeField] private TextMeshProUGUI    _scoreText          = null;
+    [SerializeField] private TextMeshProUGUI    _gameOverText       = null;
+    [SerializeField] private TextMeshProUGUI    _restartText        = null;
+    [SerializeField] private TextMeshProUGUI    _sceneStartText     = null;
+    [SerializeField] private TextMeshProUGUI    _ammoText           = null;
+    [SerializeField] private Image              _livesImg           = null;
+    [SerializeField] private Image              _thrusterChargeImg  = null;
+    [SerializeField] private Sprite[]           _livesSprites       = null;
+    [SerializeField] private GameObject         _pausePanel         = null;
 
-    private GameManager _gameManager;
-    private Player _player = null;
+    private float       _thrusterFill   = 0f;
+    private GameManager _gameManager    = null;
+    private Player      _player         = null;
 
     private void Awake()
     {
@@ -45,6 +46,9 @@ public class UIManager : MonoBehaviour
         _livesImg.sprite = _livesSprites[_player.GetLives()];
         _ammoText.text = _player.GetAmmo().ToString() + " / " + _player.GetMaxAmmo().ToString();
 
+        _thrusterFill = _player.ThrusterCharge / _player.ThrusterMaxCharge;
+        _thrusterChargeImg.fillAmount = _thrusterFill;
+
         if(_player.GetLives() == 0)
         {
             GameOverSequence();
@@ -56,20 +60,6 @@ public class UIManager : MonoBehaviour
         _gameManager.GameOver();
         _gameOverText.gameObject.SetActive(true);
         _restartText.gameObject.SetActive(true);
-    }
-
-    private IEnumerator AmmoEmptyFlickerRoutine()
-    {
-        var defaultTextColor = _ammoText.color;
-
-        _ammoText.color = Color.red;
-
-        _ammoText.text = "EMPTY";
-        yield return new WaitForSeconds(0.5f);
-
-        _ammoText.text = "";
-
-        yield return new WaitForSeconds(0.5f);
     }
 
     private IEnumerator StartSceneTimerRoutine()

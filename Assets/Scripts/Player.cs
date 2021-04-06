@@ -18,15 +18,25 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject     _shieldPrefab       = null;
     [SerializeField] private GameObject[]   _enginePrefabs      = null;
 
+    [SerializeField] private float          _thrustCharge           = 0f;
+    [SerializeField] private float          _thrustMaxCharge        = 20f;
+    [SerializeField] private float          _thrusterDepleteRate    = 0.05f;
+    [SerializeField] private float          _thrusterRegenRate      = 0.05f;
+
     private bool _isTripleShotActive    = false;
     private bool _isShieldActive        = false;
     private bool _isDead                = false;
     private bool _isAmmoEmpty           = false;
-    private bool _isThrusting = false;
+    private bool _isThrusting           = false;
 
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
-    private float           _canFire        = 0f;
+    private Vector3         _movement       = Vector3.zero;
+
+    private float           _thrustDelay    = 0f;
+    private float           _canFire        = -1f;
+    private float           _canThrust      = -1f;
+
     private const float     BoundY  = 6.5f;
     private const float     WrapX   = 13f;
 
@@ -59,6 +69,30 @@ public class Player : MonoBehaviour
         }
     }
 
+    public float ThrusterCharge
+    {
+        get { return _thrustCharge; }
+        set 
+        { 
+            _thrustCharge = value;
+
+            if (_thrustCharge >= _thrustMaxCharge)
+                _thrustCharge = _thrustMaxCharge;
+
+            if (_thrustCharge <= 0)
+            {
+                _isThrusting = false;
+                _thrustCharge = 0;
+            }
+        }
+    }
+
+    public float ThrusterMaxCharge
+    {
+        get { return _thrustMaxCharge; }
+        set { _thrustMaxCharge = value; }
+    }
+
     private void Awake()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
@@ -78,6 +112,7 @@ public class Player : MonoBehaviour
             _shieldPrefab.SetActive(false);
 
         _ammoCount = _maxAmmoCount;
+        _thrustCharge = _thrustMaxCharge;
     }
 
     private void Update()
@@ -85,20 +120,36 @@ public class Player : MonoBehaviour
         PlayerMovement();
         VerticalScreenBounds();
         HorizontalScreenWrap();
+        ThrusterRegeneration();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             Shoot();
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) && !_isThrusting)
+        if (Input.GetKey(KeyCode.LeftShift) && Time.time > _canThrust && _thrustCharge > 0)
         {
             _isThrusting = true;
+            Thruster();
         }
-        else
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _isThrusting = false;
         }
+    }
+
+    private void ThrusterRegeneration()
+    {
+        if (!_isThrusting && _thrustCharge < _thrustMaxCharge)
+        {
+            _thrustCharge += _thrusterRegenRate;
+        }
+    }
+
+    private void Thruster()
+    {
+        _canThrust = Time.time + _thrustDelay;
+        ThrusterCharge -= _thrusterDepleteRate;
     }
 
     private void Shoot()
@@ -159,16 +210,17 @@ public class Player : MonoBehaviour
         float xInput = Input.GetAxisRaw("Horizontal");
         float yInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 movement = new Vector3(xInput, yInput, 0);
+        _movement = new Vector3(xInput, yInput, 0);
 
         if (_isThrusting)
         {
-            transform.Translate(movement.normalized * (_speed + _thrustSpeed) * Time.deltaTime);
+            transform.Translate(_movement.normalized * (_speed + _thrustSpeed) * Time.deltaTime);
         }
         else if(!_isThrusting)
         {
-            transform.Translate(movement.normalized * _speed * Time.deltaTime);
+            transform.Translate(_movement.normalized * _speed * Time.deltaTime);
         }
+
     }
 
     public void Damage(int damageAmount)
