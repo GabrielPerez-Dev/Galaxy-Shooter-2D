@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int            _ammoCount          = 0;
     [SerializeField] private int            _maxAmmoCount       = 15;
     [SerializeField] private float          _speed              = 3.5f;
+    [SerializeField] private float          _thrustSpeed        = 7f;
     [SerializeField] private float          _speedBoostAmount   = 5f;
     [SerializeField] private float          _fireRate           = 0.15f;
     [SerializeField] private float          _powerDownTime      = 5f;
@@ -20,7 +21,8 @@ public class Player : MonoBehaviour
     private bool _isTripleShotActive    = false;
     private bool _isShieldActive        = false;
     private bool _isDead                = false;
-    private bool _ammoEmpty             = false;
+    private bool _isAmmoEmpty           = false;
+    private bool _isThrusting = false;
 
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
@@ -40,6 +42,20 @@ public class Player : MonoBehaviour
 
             if (_lives <= 0)
                 _lives = 0;
+        }
+    }
+
+    public int Ammo
+    {
+        get { return _ammoCount; }
+        set
+        {
+            _ammoCount = value;
+
+            if(_ammoCount == _maxAmmoCount)
+            {
+                _ammoCount = _maxAmmoCount;
+            }
         }
     }
 
@@ -74,13 +90,22 @@ public class Player : MonoBehaviour
         {
             Shoot();
         }
+
+        if (Input.GetKey(KeyCode.LeftShift) && !_isThrusting)
+        {
+            _isThrusting = true;
+        }
+        else
+        {
+            _isThrusting = false;
+        }
     }
 
     private void Shoot()
     {
         if (_ammoCount == 0)
         {
-            _ammoEmpty = true;
+            _isAmmoEmpty = true;
             _ammoCount = 0;
             _audioManager.PlayAmmoEmptySound();
 
@@ -88,7 +113,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _ammoEmpty = false;
+            _isAmmoEmpty = false;
         }
 
         _ammoCount -= 1;
@@ -136,7 +161,14 @@ public class Player : MonoBehaviour
 
         Vector3 movement = new Vector3(xInput, yInput, 0);
 
-        transform.Translate(movement.normalized * _speed * Time.deltaTime);
+        if (_isThrusting)
+        {
+            transform.Translate(movement.normalized * (_speed + _thrustSpeed) * Time.deltaTime);
+        }
+        else if(!_isThrusting)
+        {
+            transform.Translate(movement.normalized * _speed * Time.deltaTime);
+        }
     }
 
     public void Damage(int damageAmount)
@@ -247,12 +279,13 @@ public class Player : MonoBehaviour
 
     public void AddAmmo(int amount)
     {
-        _ammoCount += amount;
+        if(_ammoCount < _maxAmmoCount)
+            Ammo += amount;
     }
 
     public bool IsAmmoEmpty()
     {
-        return _ammoEmpty;
+        return _isAmmoEmpty;
     }
 
     public bool IsDead()
