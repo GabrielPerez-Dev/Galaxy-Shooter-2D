@@ -5,13 +5,16 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private int            _lives              = 3;
     [SerializeField] private int            _score              = 0;
+
+    [SerializeField] private float          _fireRate           = 0.15f;
     [SerializeField] private int            _ammoCount          = 0;
     [SerializeField] private int            _maxAmmoCount       = 15;
+
     [SerializeField] private float          _speed              = 3.5f;
     [SerializeField] private float          _thrustSpeed        = 7f;
     [SerializeField] private float          _speedBoostAmount   = 5f;
-    [SerializeField] private float          _fireRate           = 0.15f;
     [SerializeField] private float          _powerDownTime      = 5f;
+
     [SerializeField] private GameObject     _ExplosionPrefab    = null;
     [SerializeField] private GameObject     _laserPrefab        = null;
     [SerializeField] private GameObject     _triplShotPrefab    = null;
@@ -23,22 +26,25 @@ public class Player : MonoBehaviour
     [SerializeField] private float          _thrusterDepleteRate    = 0.05f;
     [SerializeField] private float          _thrusterRegenRate      = 0.05f;
 
-    private bool _isTripleShotActive    = false;
-    private bool _isShieldActive        = false;
-    private bool _isDead                = false;
-    private bool _isAmmoEmpty           = false;
-    private bool _isThrusting           = false;
+    private bool _isTripleShotActive        = false;
+    private bool _isShieldActive            = false;
+    private bool _isDead                    = false;
+    private bool _isAmmoEmpty               = false;
+    private bool _isThrusting               = false;
 
+    private SpriteRenderer  _shieldRenderer = null;
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
     private Vector3         _movement       = Vector3.zero;
+    private Color _tempColor = Color.clear;
 
     private float           _thrustDelay    = 0f;
     private float           _canFire        = -1f;
     private float           _canThrust      = -1f;
+    [SerializeField] private int             _shieldStrength = 0;
 
-    private const float     BoundY  = 6.5f;
-    private const float     WrapX   = 13f;
+    private const float     BoundY          = 6.5f;
+    private const float     WrapX           = 13f;
 
     public int Lives
     {
@@ -102,6 +108,10 @@ public class Player : MonoBehaviour
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         if (_audioManager == null)
             Debug.Log("AudioManager is null");
+
+        _shieldRenderer = _shieldPrefab.GetComponent<SpriteRenderer>();
+        if (_shieldRenderer == null)
+            Debug.Log("Shield Sprite Renderer is null");
     }
 
     private void Start()
@@ -121,6 +131,7 @@ public class Player : MonoBehaviour
         VerticalScreenBounds();
         HorizontalScreenWrap();
         ThrusterRegeneration();
+        ShieldStrengthColor();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
@@ -130,7 +141,7 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && Time.time > _canThrust && _thrustCharge > 0)
         {
             _isThrusting = true;
-            Thruster();
+            Thrusting();
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
@@ -146,7 +157,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Thruster()
+    private void Thrusting()
     {
         _canThrust = Time.time + _thrustDelay;
         ThrusterCharge -= _thrusterDepleteRate;
@@ -227,8 +238,14 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive)
         {
-            _isShieldActive = false;
-            _shieldPrefab.SetActive(false);
+            _shieldStrength--;
+
+            if(_shieldStrength == 0)
+            {
+                _isShieldActive = false;
+                _shieldPrefab.SetActive(false);
+            }
+
             return;
         }
 
@@ -296,7 +313,34 @@ public class Player : MonoBehaviour
     public void ShieldActive()
     {
         _isShieldActive = true;
+
+        if (_shieldStrength < 3)
+            _shieldStrength++;
+
         _shieldPrefab.SetActive(true);
+    }
+
+    private void ShieldStrengthColor()
+    {
+        _tempColor = _shieldRenderer.material.color;
+        _shieldRenderer.material.color = _tempColor;
+
+        if (_shieldStrength == 1)
+        {
+            _tempColor.a = 0.3f;
+        }
+        
+        if (_shieldStrength == 2)
+        {
+            _tempColor.a = 0.75f;
+        }
+        
+        if (_shieldStrength == 3)
+        {
+            _tempColor.a = 1.1f;
+        }
+
+        _shieldRenderer.material.color = _tempColor;
     }
 
     public void AddScore(int amount)
