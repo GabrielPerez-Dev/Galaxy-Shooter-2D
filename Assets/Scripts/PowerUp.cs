@@ -8,6 +8,7 @@ public enum PowerupType
     Shield,
     Health,
     Ammo,
+    GodsWish,
 }
 
 public class PowerUp : MonoBehaviour
@@ -56,6 +57,9 @@ public class PowerUp : MonoBehaviour
                         break;
                     case PowerupType.Ammo:
                         player.AmmoActive();
+                        break;
+                    case PowerupType.GodsWish:
+                        player.GodsWishActive();
                         break;
                     default:
                         _powerupType = PowerupType.None;

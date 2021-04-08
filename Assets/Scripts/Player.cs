@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject     _ExplosionPrefab    = null;
     [SerializeField] private GameObject     _laserPrefab        = null;
     [SerializeField] private GameObject     _triplShotPrefab    = null;
+    [SerializeField] private GameObject     _godsWishPrefab     = null;
     [SerializeField] private GameObject     _shieldPrefab       = null;
     [SerializeField] private GameObject[]   _enginePrefabs      = null;
 
@@ -27,22 +28,23 @@ public class Player : MonoBehaviour
     [SerializeField] private float          _thrusterRegenRate      = 0.05f;
 
     private bool _isTripleShotActive        = false;
+    private bool _isGodsWishActive          = false;
     private bool _isShieldActive            = false;
     private bool _isDead                    = false;
     private bool _isAmmoEmpty               = false;
     private bool _isThrusting               = false;
 
     private SpriteRenderer  _shieldRenderer = null;
+
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
     private Vector3         _movement       = Vector3.zero;
-    private Color _tempColor = Color.clear;
+    private Color           _tempColor      = Color.clear;
 
     private float           _thrustDelay    = 0f;
     private float           _canFire        = -1f;
     private float           _canThrust      = -1f;
-    [SerializeField] private int             _shieldStrength = 0;
-
+    private int             _shieldStrength = 0;
     private const float     BoundY          = 6.5f;
     private const float     WrapX           = 13f;
 
@@ -188,6 +190,30 @@ public class Player : MonoBehaviour
 
             _audioManager.PlayTripleShotSound();
         }
+        else if (_isGodsWishActive)
+        {
+            int numberOfProjectiles = 20;
+            float radius = 5f;
+
+            float angleStep = 360f / numberOfProjectiles;
+            float angle = 0f;
+
+            for (int i = 0; i <= numberOfProjectiles; i++)
+            {
+                float projectileDirXposition = transform.position.x + Mathf.Sin((angle * Mathf.PI) / 180) * radius;
+                float projectileDirYposition = transform.position.y + Mathf.Cos((angle * Mathf.PI) / 180) * radius;
+
+                Vector3 projectileVector = new Vector3(projectileDirXposition, projectileDirYposition, 0);
+                Vector3 projectileMoveDir = (projectileVector - transform.position).normalized * 5f;
+
+                var projectile = Instantiate(_godsWishPrefab, transform.position, Quaternion.identity);
+                projectile.GetComponent<Rigidbody2D>().velocity = new Vector3(projectileMoveDir.x, projectileMoveDir.y, 0);
+
+                angle += angleStep;
+            }
+
+            _audioManager.PlayGodsWishSound();
+        }
         else
         {
             Vector3 offsetY = new Vector3(0, 1f, 0);
@@ -294,6 +320,27 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(_powerDownTime);
 
         _isTripleShotActive = false;
+    }
+
+    public void GodsWishActive()
+    {
+        _isGodsWishActive = true;
+
+        _ammoCount = _maxAmmoCount;
+
+        StartCoroutine(GodsWishPowerDownRoutine());
+    }
+
+    private IEnumerator GodsWishPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(_powerDownTime);
+
+        _isGodsWishActive = false;
+    }
+
+    public bool IsGodsWishActive()
+    {
+        return _isGodsWishActive;
     }
 
     public void SpeedBoostActive()

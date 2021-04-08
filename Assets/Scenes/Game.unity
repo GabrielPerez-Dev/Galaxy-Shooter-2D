@@ -226,6 +226,63 @@ RectTransform:
   m_AnchoredPosition: {x: 0.000032425, y: -6.3}
   m_SizeDelta: {x: 315.55, y: 148.75119}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &65348494
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9203467777291679655, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_Name
+      value: GodsWish_Powerup
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.015543938
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6297402
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203467777291679657, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
 --- !u!1 &83508039
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,7 +904,7 @@ RectTransform:
   - {fileID: 96407684}
   - {fileID: 2720055}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1484,7 +1541,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &704665928
 GameObject:
@@ -1806,7 +1863,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &759166468
 GameObject:
@@ -2192,7 +2249,7 @@ Transform:
   - {fileID: 111106583}
   - {fileID: 942138604}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &832787897
 MonoBehaviour:
@@ -2218,6 +2275,7 @@ MonoBehaviour:
   _ExplosionPrefab: {fileID: 2650851927687773958, guid: 378c907d198840e4fa37a825f300b701, type: 3}
   _laserPrefab: {fileID: 1370449868479395646, guid: 54cfd45195429d84492b41950b54be53, type: 3}
   _triplShotPrefab: {fileID: 1582960961906144069, guid: 389e3beb0cadde044a8a940356c4a6c7, type: 3}
+  _godsWishPrefab: {fileID: 2716148194149976578, guid: d358a2d36c757994da8753e7afdd142a, type: 3}
   _shieldPrefab: {fileID: 583179804}
   _enginePrefabs:
   - {fileID: 506153604}
@@ -2226,7 +2284,6 @@ MonoBehaviour:
   _thrustMaxCharge: 20
   _thrusterDepleteRate: 0.05
   _thrusterRegenRate: 0.05
-  _shieldStrength: 0
 --- !u!70 &832787898
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2485,7 +2542,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1149684006
 GameObject:
@@ -2523,10 +2580,12 @@ MonoBehaviour:
   - {fileID: 6453831168382010556, guid: 0f93d4b4b70110b48b6673cc9d40a17d, type: 3}
   - {fileID: 8440179884229992047, guid: 487612979a05e92479a39f9ff8e0fde9, type: 3}
   - {fileID: 2070008139066324952, guid: b736da6744cb97949a93bbf31b724667, type: 3}
+  _rarePowerupPrefabs:
+  - {fileID: 9203467777291679655, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
   _asteroidPrefabs:
   - {fileID: 4686921451695450816, guid: d1b7d4df4d1f9fa44b7e9e6438f556fd, type: 3}
   _enemyContainer: {fileID: 1743790641}
-  _spawnTime: 2
+  _spawnTime: 3
 --- !u!4 &1149684008
 Transform:
   m_ObjectHideFlags: 0
@@ -2540,7 +2599,7 @@ Transform:
   m_Children:
   - {fileID: 1743790642}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1215380695
 GameObject:
@@ -2830,7 +2889,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1743790641
 GameObject:
@@ -3376,7 +3435,7 @@ Transform:
   m_Children:
   - {fileID: 83508040}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1961587633
 MonoBehaviour:
@@ -3393,6 +3452,7 @@ MonoBehaviour:
   _audioSource: {fileID: 1961587631}
   _laser: {fileID: 8300000, guid: 25649aaaefb7ab74e90d781702bf3dd4, type: 3}
   _tripleShot: {fileID: 8300000, guid: 7688ac01013ca23479f233cdbc9be566, type: 3}
+  _godsWish: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _explosion: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   _powerup: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
   _ammoEmpty: {fileID: 8300000, guid: 711937db1362eaa488012b96786319e0, type: 3}

@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource    _audioSource    = null;
     [SerializeField] private AudioClip      _laser          = null;
     [SerializeField] private AudioClip      _tripleShot     = null;
+    [SerializeField] private AudioClip      _godsWish       = null;
     [SerializeField] private AudioClip      _explosion      = null;
     [SerializeField] private AudioClip      _powerup        = null;
     [SerializeField] private AudioClip      _ammoEmpty      = null;
@@ -34,5 +35,10 @@ public class AudioManager : MonoBehaviour
     public void PlayTripleShotSound()
     {
         _audioSource.PlayOneShot(_tripleShot);
+    }
+
+    public void PlayGodsWishSound()
+    {
+        _audioSource.PlayOneShot(_godsWish);
     }
 }

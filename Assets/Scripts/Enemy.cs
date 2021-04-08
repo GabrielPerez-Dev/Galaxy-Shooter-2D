@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        float randomValue = Random.Range(2.5f, 4f);
+        float randomValue = Random.Range(1.5f, 3f);
         _speed = randomValue;
     }
 
@@ -47,8 +47,8 @@ public class Enemy : MonoBehaviour
             _fireRate = Random.Range(3f, 6f);
             _canFire = Time.time + _fireRate;
 
-            Vector3 offsetY = new Vector3(0, -1f, 0);
-            var enemeyLaser = Instantiate(_laserPrefab, transform.position + offsetY, Quaternion.identity);
+            Vector3 offsetY = new Vector3(0, -0.5f, 0);
+            var enemeyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
             Projectile[] lasers = enemeyLaser.GetComponentsInChildren<Projectile>();
 
             for (int i = 0; i < lasers.Length; i++)

@@ -5,6 +5,7 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab = null;
     [SerializeField] private GameObject[] _powerupPrefabs = null;
+    [SerializeField] private GameObject[] _rarePowerupPrefabs = null;
     [SerializeField] private GameObject[] _asteroidPrefabs = null;
     [SerializeField] private GameObject _enemyContainer = null;
     [SerializeField] private float _spawnTime = 5f;
@@ -58,7 +59,16 @@ public class SpawnManager : MonoBehaviour
             Vector3 randonXposition = new Vector3(randomX, 8, 0);
 
             int randomPowerUp = Random.Range(0, _powerupPrefabs.Length);
-            Instantiate(_powerupPrefabs[randomPowerUp], randonXposition, Quaternion.identity);
+            float randomValue = Random.value;
+
+            if (randomValue < 0.95f) //Instantiate Common power-ups
+                Instantiate(_powerupPrefabs[randomPowerUp], randonXposition, Quaternion.identity);
+
+            int randomRare = Random.Range(0, _rarePowerupPrefabs.Length);
+            if (randomValue >= 0.95f) //Instantiate Rare power-ups
+            {
+                Instantiate(_rarePowerupPrefabs[randomRare], randonXposition, Quaternion.identity);
+            }
 
             float randomTime = Random.Range(6, 20);
             yield return new WaitForSeconds(randomTime);

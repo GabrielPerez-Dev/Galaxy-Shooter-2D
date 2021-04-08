@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6403661994457281842
+--- !u!1 &9203467776645381034
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,36 +8,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2057158439744613870}
-  - component: {fileID: 3772958637292186744}
+  - component: {fileID: 9203467776645381035}
+  - component: {fileID: 9203467776645381036}
   m_Layer: 0
-  m_Name: HealthSprite
+  m_Name: GodsWishSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2057158439744613870
+--- !u!4 &9203467776645381035
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6403661994457281842}
+  m_GameObject: {fileID: 9203467776645381034}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
-  m_Father: {fileID: 7008480809361846888}
+  m_Father: {fileID: 9203467777291679657}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &3772958637292186744
+--- !u!212 &9203467776645381036
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6403661994457281842}
+  m_GameObject: {fileID: 9203467776645381034}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 439085263
   m_SortingLayer: 2
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: db263057c8c5a9f4eb65fddcc1ccf084, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d053dde2a2779514bbf9895ed6b1b6c8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &8440179884229992047
+--- !u!1 &9203467777291679655
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,54 +90,54 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7008480809361846888}
-  - component: {fileID: 1740714047346649400}
-  - component: {fileID: 8618485119402068708}
-  - component: {fileID: 8147157189878778815}
+  - component: {fileID: 9203467777291679657}
+  - component: {fileID: 9203467777291679656}
+  - component: {fileID: 9203467777291679659}
+  - component: {fileID: 9203467777291679658}
   m_Layer: 0
-  m_Name: Health_Powerup
+  m_Name: GodsWish_Powerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7008480809361846888
+--- !u!4 &9203467777291679657
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8440179884229992047}
+  m_GameObject: {fileID: 9203467777291679655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 3.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2057158439744613870}
+  - {fileID: 9203467776645381035}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1740714047346649400
+--- !u!114 &9203467777291679656
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8440179884229992047}
+  m_GameObject: {fileID: 9203467777291679655}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fbd33435a856de429f0c5d88ff21d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _powerupType: 4
-  _probability: 0
-  _speed: 4
---- !u!58 &8618485119402068708
+  _powerupType: 6
+  _probability: 0.996
+  _speed: 5
+--- !u!58 &9203467777291679659
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8440179884229992047}
+  m_GameObject: {fileID: 9203467777291679655}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -147,14 +147,14 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!50 &8147157189878778815
+--- !u!50 &9203467777291679658
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8440179884229992047}
+  m_GameObject: {fileID: 9203467777291679655}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
