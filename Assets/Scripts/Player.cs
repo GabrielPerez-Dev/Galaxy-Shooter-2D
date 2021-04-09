@@ -262,6 +262,9 @@ public class Player : MonoBehaviour
 
     public void Damage(int damageAmount)
     {
+        CameraShake camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
+        camera.ActivateCameraShake();
+
         if (_isShieldActive)
         {
             _shieldStrength--;

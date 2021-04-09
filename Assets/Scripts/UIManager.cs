@@ -47,7 +47,8 @@ public class UIManager : MonoBehaviour
         _ammoText.text = _player.GetAmmo().ToString() + " / " + _player.GetMaxAmmo().ToString();
 
         _thrusterFill = _player.ThrusterCharge / _player.ThrusterMaxCharge;
-        _thrusterChargeImg.fillAmount = _thrusterFill;
+        if(_thrusterChargeImg != null)
+            _thrusterChargeImg.fillAmount = _thrusterFill;
 
         if(_player.GetLives() == 0)
         {
