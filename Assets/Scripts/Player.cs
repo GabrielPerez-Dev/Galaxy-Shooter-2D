@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
 
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
+    private Flasher     _flashDamage    = null;
+    private CameraShake     _cameraShake    = null;
     private Vector3         _movement       = Vector3.zero;
     private Color           _tempColor      = Color.clear;
 
@@ -114,6 +116,14 @@ public class Player : MonoBehaviour
         _shieldRenderer = _shieldPrefab.GetComponent<SpriteRenderer>();
         if (_shieldRenderer == null)
             Debug.Log("Shield Sprite Renderer is null");
+
+        _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
+        if (_cameraShake == null)
+            Debug.Log("CameraShake is null");
+
+        _flashDamage = GetComponent<Flasher>();
+        if (_flashDamage == null)
+            Debug.Log("FlashDamage is null");
     }
 
     private void Start()
@@ -262,8 +272,8 @@ public class Player : MonoBehaviour
 
     public void Damage(int damageAmount)
     {
-        CameraShake camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
-        camera.ActivateCameraShake();
+        _cameraShake.ActivateCameraShake();
+        _flashDamage.FlashWhenHit();
 
         if (_isShieldActive)
         {
