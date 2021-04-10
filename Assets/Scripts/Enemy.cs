@@ -1,15 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
+public enum EnemyType { Default, }
+
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private EnemyType  _enemyType      = EnemyType.Default;
     [SerializeField] private GameObject _laserPrefab    = null;
-    [SerializeField] private float      _speed          = 4f;
     [SerializeField] private int        _giveDamage     = 1;
     [SerializeField] private int        _givePoints     = 10;
     [SerializeField] private int        _giveAmmo       = 1;
     [SerializeField] private Collider2D _collider       = null;
 
+    private EnemyMovement _movement = null;
     private AudioManager _audioManager = null;
     private Animator _animator = null;
     private Player _player = null;
@@ -17,9 +20,15 @@ public class Enemy : MonoBehaviour
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
 
+    private bool _isDead = false;
+
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _movement = GetComponent<EnemyMovement>();
+        if (_movement == null)
+            Debug.Log("EnemyMovement is null");
+
+        _animator = GetComponentInChildren<Animator>();
         if (_animator == null) 
             Debug.LogError("The Animator is NULL");
 
@@ -32,17 +41,9 @@ public class Enemy : MonoBehaviour
             Debug.LogError("AudioManager is null");
     }
 
-    private void Start()
-    {
-        float randomValue = Random.Range(1.5f, 3f);
-        _speed = randomValue;
-    }
-
     private void Update()
     {
-        Movement();
-
-        if(Time.time > _canFire)
+        if(Time.time > _canFire && !_isDead)
         {
             _fireRate = Random.Range(3f, 6f);
             _canFire = Time.time + _fireRate;
@@ -58,23 +59,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Movement()
-    {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-        if (transform.position.y < -8f)
-        {
-            if (_player.IsDead()) return;
-
-            float randomXposition = Random.Range(-11, 11);
-            transform.position = new Vector3(randomXposition, 8f, 0);
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            _isDead = true;
+
             Player player = other.transform.GetComponent<Player>();
 
             if (player != null)
@@ -89,13 +79,15 @@ public class Enemy : MonoBehaviour
             }
 
             _animator.SetTrigger("isDestroyed");
-            _speed = 1f;
+            _movement.Speed = 1f;
             _audioManager.PlayExplosionSound();
             Destroy(gameObject, 2f);
         }
 
         if (other.gameObject.CompareTag("Projectile"))
         {
+            _isDead = true;
+
             Destroy(other.gameObject);
 
             if (_player != null)
@@ -105,7 +97,7 @@ public class Enemy : MonoBehaviour
             }
 
             _animator.SetTrigger("isDestroyed");
-            _speed = 1f;
+            _movement.Speed = 1f;
             _audioManager.PlayExplosionSound();
 
             _collider.enabled = false;
