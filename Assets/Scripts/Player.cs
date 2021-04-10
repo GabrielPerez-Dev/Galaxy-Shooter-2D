@@ -273,7 +273,6 @@ public class Player : MonoBehaviour
     public void Damage(int damageAmount)
     {
         _cameraShake.ActivateCameraShake();
-        _flashDamage.FlashWhenHit();
 
         if (_isShieldActive)
         {
@@ -287,6 +286,8 @@ public class Player : MonoBehaviour
 
             return;
         }
+
+        _flashDamage.FlashWhenHit();
 
         _lives -= damageAmount;
 

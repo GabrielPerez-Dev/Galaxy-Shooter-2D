@@ -7,6 +7,9 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyType  _enemyType      = EnemyType.Default;
     [SerializeField] private GameObject _laserPrefab    = null;
+    [SerializeField] private GameObject _shieldPrefab   = null;
+    [SerializeField] private int        _lives          = 1;
+    [SerializeField] private int        _maxLives       = 1;
     [SerializeField] private int        _giveDamage     = 1;
     [SerializeField] private int        _givePoints     = 10;
     [SerializeField] private int        _giveAmmo       = 1;
@@ -14,6 +17,7 @@ public class Enemy : MonoBehaviour
 
     private EnemyMovement _movement = null;
     private AudioManager _audioManager = null;
+    private Flasher _flasher = null;
     private Animator _animator = null;
     private Player _player = null;
 
@@ -21,6 +25,8 @@ public class Enemy : MonoBehaviour
     private float _canFire = -1f;
 
     private bool _isDead = false;
+    private bool _isShieldActive = false;
+
 
     private void Awake()
     {
@@ -39,6 +45,22 @@ public class Enemy : MonoBehaviour
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         if (_audioManager == null)
             Debug.LogError("AudioManager is null");
+
+        _flasher = GetComponent<Flasher>();
+        if (_flasher == null)
+            Debug.LogError("Flasher is null");
+    }
+
+    private void Start()
+    {
+        _lives = _maxLives;
+
+        float shieldProbability = 0.2f;
+        if (Random.value < shieldProbability)
+        {
+            _isShieldActive = true;
+            _shieldPrefab.SetActive(true);
+        }
     }
 
     private void Update()
@@ -59,12 +81,24 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void TakeDamage(int amount)
+    {
+        _flasher.FlashWhenHit();
+
+        _lives -= amount;
+
+        if (_lives <= 0)
+        {
+            _isDead = true;
+            Destroy(gameObject, 2f);
+        }
+
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            _isDead = true;
-
             Player player = other.transform.GetComponent<Player>();
 
             if (player != null)
@@ -78,17 +112,31 @@ public class Enemy : MonoBehaviour
                 }
             }
 
+            if (_isShieldActive)
+            {
+                _isShieldActive = false;
+                _shieldPrefab.SetActive(false);
+                return;
+            }
+
             _animator.SetTrigger("isDestroyed");
             _movement.Speed = 1f;
             _audioManager.PlayExplosionSound();
-            Destroy(gameObject, 2f);
+            TakeDamage(1);
         }
 
         if (other.gameObject.CompareTag("Projectile"))
         {
-            _isDead = true;
-
             Destroy(other.gameObject);
+
+            if (_isShieldActive)
+            {
+                _isShieldActive = false;
+                _shieldPrefab.SetActive(false);
+                return;
+            }
+
+            _isDead = true;
 
             if (_player != null)
             {
@@ -102,7 +150,7 @@ public class Enemy : MonoBehaviour
 
             _collider.enabled = false;
 
-            Destroy(gameObject, 2f);
+            TakeDamage(1);
         }
 
         if(other.gameObject.CompareTag("Enemy Projectile"))
