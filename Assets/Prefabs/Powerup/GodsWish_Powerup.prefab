@@ -129,8 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerupType: 6
-  _probability: 0.996
   _speed: 5
+  _probability: 1
 --- !u!58 &9203467777291679659
 CircleCollider2D:
   m_ObjectHideFlags: 0

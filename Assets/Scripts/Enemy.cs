@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int        _maxLives       = 1;
     [SerializeField] private int        _giveDamage     = 1;
     [SerializeField] private int        _givePoints     = 10;
-    [SerializeField] private int        _giveAmmo       = 1;
     [SerializeField] private Collider2D _collider       = null;
 
     private EnemyMovement _movement = null;
@@ -141,7 +140,6 @@ public class Enemy : MonoBehaviour
             if (_player != null)
             {
                 _player.AddScore(_givePoints);
-                _player.AddAmmo(_giveAmmo);
             }
 
             _animator.SetTrigger("isDestroyed");
