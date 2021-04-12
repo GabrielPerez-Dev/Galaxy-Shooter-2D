@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _enemyPrefab = null;
+    [SerializeField] private GameObject[] _enemyPrefabs = null;
     [SerializeField] private GameObject[] _powerupPrefabs = null;
     [SerializeField] private GameObject[] _asteroidPrefabs = null;
     [SerializeField] private GameObject _enemyContainer = null;
@@ -11,6 +11,7 @@ public class SpawnManager : MonoBehaviour
 
     private GameManager _gameManager = null;
     private GameObject enemyInstance = null;
+    private EnemyType _enemyType = EnemyType.None;
 
     private bool _stopSpawning = false;
 
@@ -44,8 +45,12 @@ public class SpawnManager : MonoBehaviour
 
             var randomValue = Random.value;
 
-            if (randomValue > 0 && randomValue < 1f)
-                enemyInstance = Instantiate(_enemyPrefab, randomXposition, Quaternion.identity);
+            if (randomValue > 0 && randomValue < 0.5f) //Infantry
+                enemyInstance = Instantiate(_enemyPrefabs[0], randomXposition, Quaternion.identity);
+            else if (randomValue > 0.5f && randomValue <= 0.9f) //Assault
+                enemyInstance = Instantiate(_enemyPrefabs[1], randomXposition, Quaternion.identity);
+            else if (randomValue > 0.9f && randomValue <= 1f)// Carrier
+                enemyInstance = Instantiate(_enemyPrefabs[2], randomXposition, Quaternion.identity);
 
             enemyInstance.transform.parent = _enemyContainer.transform;
 
@@ -86,6 +91,12 @@ public class SpawnManager : MonoBehaviour
             Instantiate(_powerupPrefabs[3], randomXposition, Quaternion.identity);
         else if (randomValue > 0.6f && randomValue <= 1f)                        //Ammo
             Instantiate(_powerupPrefabs[4], randomXposition, Quaternion.identity);
+
+        if (_enemyType == EnemyType.Carrier)
+        {
+            Instantiate(_powerupPrefabs[0], randomXposition, Quaternion.identity);
+        }
+
     }
 
     private IEnumerator SpawnAsteroidRoutine()

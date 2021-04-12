@@ -4,7 +4,7 @@ public enum ProjectileType
 { 
     None,
     Laser, 
-    GodsWish,
+    Spread,
 }
 
 public class Projectile : MonoBehaviour
@@ -25,8 +25,8 @@ public class Projectile : MonoBehaviour
                 MoveDown();
         }
 
-        if (_type == ProjectileType.GodsWish)
-            DestroyGodsWishProjectile();
+        if (_type == ProjectileType.Spread)
+            DestroySpreadProjectile();
     }
 
     private void MoveUp()
@@ -57,7 +57,7 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void DestroyGodsWishProjectile()
+    private void DestroySpreadProjectile()
     {
         if(transform.position.x > 13f || transform.position.x < -13f || 
             transform.position.y > _destroyOnYAxis || transform.position.y < -_destroyOnYAxis)

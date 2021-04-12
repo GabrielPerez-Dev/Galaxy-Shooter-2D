@@ -1083,7 +1083,7 @@ Transform:
   m_GameObject: {fileID: 583179804}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children: []
   m_Father: {fileID: 832787896}
   m_RootOrder: 1
@@ -2226,7 +2226,7 @@ MonoBehaviour:
   _score: 0
   _fireRate: 0.15
   _ammoCount: 0
-  _maxAmmoCount: 25
+  _maxAmmoCount: 65
   _speed: 5
   _thrustSpeed: 2
   _speedBoostAmount: 3
@@ -2257,7 +2257,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.05666578}
-  m_Size: {x: 0.93, y: 1.7553298}
+  m_Size: {x: 0.93, y: 1.1}
   m_Direction: 0
 --- !u!82 &832787899
 AudioSource:
@@ -2545,7 +2545,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5b1e621d3191041b94865b55577ee3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 1667783957490559220, guid: 6ce4a0e4b192d2b4a8fabd21cc7afc4b, type: 3}
+  _enemyPrefabs:
+  - {fileID: 1667783957490559220, guid: 6ce4a0e4b192d2b4a8fabd21cc7afc4b, type: 3}
+  - {fileID: 8686369168275030574, guid: fec307a9a32ab73479f6085ef36b54a2, type: 3}
+  - {fileID: 7470118814073132382, guid: 9c89d3ee4a3c0ab489a481003fea1562, type: 3}
   _powerupPrefabs:
   - {fileID: 9203467777291679655, guid: 3d4d611e999c65f44a9be737d8641e66, type: 3}
   - {fileID: 6453831168382010556, guid: 0f93d4b4b70110b48b6673cc9d40a17d, type: 3}
@@ -3453,7 +3456,7 @@ Transform:
   m_GameObject: {fileID: 2081271745}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 832787896}
   m_RootOrder: 0
