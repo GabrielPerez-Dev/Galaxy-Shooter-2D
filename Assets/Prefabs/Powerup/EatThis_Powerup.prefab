@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerupType: 7
+  _spawnRate: 3
   _speed: 4
 --- !u!58 &938754202937915578
 CircleCollider2D:

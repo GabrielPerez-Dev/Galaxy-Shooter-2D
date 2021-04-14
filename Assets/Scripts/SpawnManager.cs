@@ -11,7 +11,6 @@ public class SpawnManager : MonoBehaviour
 
     private GameManager _gameManager = null;
     private GameObject enemyInstance = null;
-    private EnemyType _enemyType = EnemyType.None;
 
     private bool _stopSpawning = false;
 
@@ -43,17 +42,7 @@ public class SpawnManager : MonoBehaviour
             float randomX = Random.Range(-11, 11);
             Vector3 randomXposition = new Vector3(randomX, 8, 0);
 
-            var randomValue = Random.value;
-
-            if (randomValue > 0 && randomValue < 0.5f) //Infantry
-                enemyInstance = Instantiate(_enemyPrefabs[0], randomXposition, Quaternion.identity);
-            else if (randomValue > 0.5f && randomValue <= 0.9f) //Assault
-                enemyInstance = Instantiate(_enemyPrefabs[1], randomXposition, Quaternion.identity);
-            else if (randomValue > 0.9f && randomValue <= 1f) // Carrier
-            {
-                Vector3 offSetY = new Vector3(0, 2, 0);
-                enemyInstance = Instantiate(_enemyPrefabs[2], randomXposition + offSetY, Quaternion.identity);
-            }
+            var enemyInstance = Instantiate(GetEnemyGameObject(), randomXposition, Quaternion.identity);
 
             enemyInstance.transform.parent = _enemyContainer.transform;
 
@@ -73,33 +62,75 @@ public class SpawnManager : MonoBehaviour
             float randomX = Random.Range(-11, 11);
             Vector3 randomXposition = new Vector3(randomX, 8, 0);
 
-            PowerupProbabilityCheck(randomXposition);
+            Instantiate(GetPowerupGameObject(), randomXposition, Quaternion.identity);
 
             float randomTime = Random.Range(6, 20);
             yield return new WaitForSeconds(randomTime);
         }
     }
 
-    private void PowerupProbabilityCheck(Vector3 randomXposition)
+    private GameObject GetEnemyGameObject()
     {
-        var randomValue = Random.value;
-
-        if (randomValue > 0f && randomValue <= .05f)                             //Gods Wish
-            Instantiate(_powerupPrefabs[0], randomXposition, Quaternion.identity);
-        else if (randomValue > 0.05f && randomValue <= 0.2f)                     //Shields
-            Instantiate(_powerupPrefabs[1], randomXposition, Quaternion.identity);
-        else if (randomValue > 0.2f && randomValue <= 0.4f)                      //Health
-            Instantiate(_powerupPrefabs[2], randomXposition, Quaternion.identity);
-        else if (randomValue > 0.04f && randomValue <= 0.6f)                      //TripleShot
-            Instantiate(_powerupPrefabs[3], randomXposition, Quaternion.identity);
-        else if (randomValue > 0.6f && randomValue <= 1f)                        //Ammo
-            Instantiate(_powerupPrefabs[4], randomXposition, Quaternion.identity);
-
-        if (_enemyType == EnemyType.Carrier)
+        float sum = 0f;
+        foreach (var enemyGO in _enemyPrefabs)
         {
-            Instantiate(_powerupPrefabs[0], randomXposition, Quaternion.identity);
+            var enemy = enemyGO.GetComponent<Enemy>();
+            sum += enemy.GetSpawnRate();
         }
 
+        float randomRate = 0f;
+        do
+        {
+            // no rate on any number?
+            if (sum == 0)
+                return null;
+            randomRate = Random.Range(0, sum);
+        }
+        while (randomRate == sum);
+
+        foreach (var enemyGO in _enemyPrefabs)
+        {
+            var enemy = enemyGO.GetComponent<Enemy>();
+            if (randomRate < enemy.GetSpawnRate())
+                return enemyGO;
+            randomRate -= enemy.GetSpawnRate();
+        }
+
+        return null;
+    }
+
+    private GameObject GetPowerupGameObject()
+    {
+        // Add up all the spawn rate to a sum
+        float sum = 0f;
+        foreach (var powerupGO in _powerupPrefabs)
+        {
+            var powerup = powerupGO.GetComponent<PowerUp>();
+            sum += powerup.GetSpawnRate();
+        }
+
+        // Generate a random number between 0 and sum
+        float randomRate = 0f;
+        do
+        {
+            // no weight on any number?
+            if (sum == 0)
+                return null;
+            randomRate = Random.Range(0, sum);
+        }
+        while (randomRate == sum);
+
+        // Go through all numbers and check if the random number is less than the rate of the powerup. 
+        //If not, then subtract the weight
+        foreach (var powerupGO in _powerupPrefabs)
+        {
+            var powerup = powerupGO.GetComponent<PowerUp>();
+            if (randomRate < powerup.GetSpawnRate())
+                return powerupGO;
+            randomRate -= powerup.GetSpawnRate();
+        }
+
+        return null;
     }
 
     private IEnumerator SpawnAsteroidRoutine()

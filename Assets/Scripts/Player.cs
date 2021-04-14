@@ -109,9 +109,9 @@ public class Player : MonoBehaviour
         {
             _missleCount = value;
 
-            if(_missleCount >= 3)
+            if(_missleCount >= _maxMissleCount)
             {
-                _missleCount = 3;
+                _missleCount = _maxAmmoCount;
             }
 
             if(_missleCount <= 0)
@@ -175,7 +175,7 @@ public class Player : MonoBehaviour
             FireProjectile();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && Time.time > _canFire)
         {
             FireMissle();
         }
@@ -207,6 +207,8 @@ public class Player : MonoBehaviour
 
     private void FireMissle()
     {
+        _canFire = Time.time + _fireRate;
+
         if(_missleCount == 0)
         {
             _missleCount = 0;

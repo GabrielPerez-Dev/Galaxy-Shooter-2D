@@ -236,11 +236,13 @@ MonoBehaviour:
   _enemyType: 2
   _explosionPrefab: {fileID: 1675648454040300859, guid: 78b60b633b63fbd4cbbc7b6c99e65da3, type: 3}
   _shieldPrefab: {fileID: 3168564997536965165}
+  _spawnRate: 5
   _lives: 3
   _maxLives: 3
   _giveDamage: 1
   _givePoints: 15
   _collider: {fileID: 8226704390731495791}
+  _fireRate: 3
   _assaultProjectilePrefab: {fileID: 3855957370924187517, guid: a3bd70d4119c90c428703d2fe8bf43f9, type: 3}
   numberOfProjectiles: 10
   radius: 5

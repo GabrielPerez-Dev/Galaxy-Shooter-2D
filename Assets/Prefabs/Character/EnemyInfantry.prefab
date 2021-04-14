@@ -154,6 +154,7 @@ MonoBehaviour:
   _enemyType: 1
   _explosionPrefab: {fileID: 2650851927687773958, guid: 378c907d198840e4fa37a825f300b701, type: 3}
   _shieldPrefab: {fileID: 1616381387252192642}
+  _spawnRate: 10
   _lives: 1
   _maxLives: 1
   _giveDamage: 1

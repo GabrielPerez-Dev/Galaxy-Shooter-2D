@@ -5,6 +5,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected EnemyType    _enemyType          = EnemyType.None;
     [SerializeField] protected GameObject   _explosionPrefab    = null;
     [SerializeField] protected GameObject   _shieldPrefab       = null;
+    [SerializeField] private float          _spawnRate          = 0f;
     [SerializeField] protected int          _lives              = 1;
     [SerializeField] private int            _maxLives           = 1;
     [SerializeField] private int            _giveDamage         = 1;
@@ -142,6 +143,11 @@ public abstract class Enemy : MonoBehaviour
     public void SetLives()
     {
         _lives = _maxLives;
+    }
+
+    public float GetSpawnRate()
+    {
+        return _spawnRate;
     }
 
     public EnemyType GetEnemyType()

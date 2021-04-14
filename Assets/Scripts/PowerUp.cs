@@ -15,6 +15,7 @@ public enum PowerupType
 public class PowerUp : MonoBehaviour
 {
     [SerializeField] private PowerupType _powerupType = PowerupType.None;
+    [SerializeField] private float _spawnRate = 0f;
     [SerializeField] private float _speed = 3f;
 
     private AudioManager _audioManager = null;
@@ -32,6 +33,11 @@ public class PowerUp : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public float GetSpawnRate()
+    {
+        return _spawnRate;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
