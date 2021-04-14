@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI    _restartText        = null;
     [SerializeField] private TextMeshProUGUI    _sceneStartText     = null;
     [SerializeField] private TextMeshProUGUI    _ammoText           = null;
+    [SerializeField] private TextMeshProUGUI    _missleText         = null;
     [SerializeField] private Image              _livesImg           = null;
     [SerializeField] private Image              _thrusterChargeImg  = null;
     [SerializeField] private Sprite[]           _livesSprites       = null;
@@ -45,6 +46,7 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + _player.GetScore().ToString();
         _livesImg.sprite = _livesSprites[_player.GetLives()];
         _ammoText.text = _player.GetAmmo().ToString() + " / " + _player.GetMaxAmmo().ToString();
+        _missleText.text = _player.GetMissleCount().ToString() + " / " + _player.GetMaxMissile().ToString();
 
         _thrusterFill = _player.ThrusterCharge / _player.ThrusterMaxCharge;
         if(_thrusterChargeImg != null)

@@ -30,7 +30,8 @@ public class EnemyAssault : Enemy
                 Vector3 projectileMoveDir = (projectilVector - transform.position).normalized * 3f;
 
                 var projectile = Instantiate(_assaultProjectilePrefab, transform.position, Quaternion.identity);
-                projectile.GetComponent<Rigidbody2D>().velocity = new Vector3(projectileMoveDir.x, projectileMoveDir.y, 0);
+                if(projectile != null)
+                    projectile.GetComponent<Rigidbody2D>().velocity = new Vector3(projectileMoveDir.x, projectileMoveDir.y, 0);
 
                 angle += angleStep;
 
@@ -65,7 +66,8 @@ public class EnemyAssault : Enemy
                 Vector3 projectileMoveDir = (projectilVector - transform.position).normalized * 3f;
 
                 var projectile = Instantiate(_assaultProjectilePrefab, transform.position, Quaternion.identity);
-                projectile.GetComponent<Rigidbody2D>().velocity = new Vector3(projectileMoveDir.x, projectileMoveDir.y, 0);
+                if(projectile != null)
+                    projectile.GetComponent<Rigidbody2D>().velocity = new Vector3(projectileMoveDir.x, projectileMoveDir.y, 0);
 
                 angle += angleStep;
 

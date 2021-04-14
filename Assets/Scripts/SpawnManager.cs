@@ -49,8 +49,11 @@ public class SpawnManager : MonoBehaviour
                 enemyInstance = Instantiate(_enemyPrefabs[0], randomXposition, Quaternion.identity);
             else if (randomValue > 0.5f && randomValue <= 0.9f) //Assault
                 enemyInstance = Instantiate(_enemyPrefabs[1], randomXposition, Quaternion.identity);
-            else if (randomValue > 0.9f && randomValue <= 1f)// Carrier
-                enemyInstance = Instantiate(_enemyPrefabs[2], randomXposition, Quaternion.identity);
+            else if (randomValue > 0.9f && randomValue <= 1f) // Carrier
+            {
+                Vector3 offSetY = new Vector3(0, 2, 0);
+                enemyInstance = Instantiate(_enemyPrefabs[2], randomXposition + offSetY, Quaternion.identity);
+            }
 
             enemyInstance.transform.parent = _enemyContainer.transform;
 

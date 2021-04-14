@@ -12,8 +12,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private Collider2D     _collider           = null;
     [SerializeField] protected float        _fireRate           = 3.0f;
 
-    protected EnemyMovement _movement = null;
-    private AudioManager _audioManager = null;
+    protected EnemyMovement     _movement       = null;
+    protected AudioManager      _audioManager   = null;
     protected Flasher _flasher = null;
     protected Player _player = null;
 

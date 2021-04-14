@@ -9,6 +9,7 @@ public enum PowerupType
     Health,
     Ammo,
     GodsWish,
+    EatThis,
 }
 
 public class PowerUp : MonoBehaviour
@@ -60,6 +61,9 @@ public class PowerUp : MonoBehaviour
                         break;
                     case PowerupType.GodsWish:
                         player.GodsWishActive();
+                        break;
+                    case PowerupType.EatThis:
+                        player.EatThisActive();
                         break;
                     default:
                         _powerupType = PowerupType.None;

@@ -35,7 +35,7 @@ public class EnemyCarrier : Enemy
     {
         int count = 0;
 
-        while (count <= 12 && !_player.IsDead())
+        while (count <= 6 && !_player.IsDead())
         {
             count++;
 
@@ -44,6 +44,7 @@ public class EnemyCarrier : Enemy
             for (int i = 0; i < _spawnLocations.Length; i++)
             {
                 if (_player == null) break;
+
                 Instantiate(_dronePrefab, _spawnLocations[i].position, Quaternion.identity);
             }
         }

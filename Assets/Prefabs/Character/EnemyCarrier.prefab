@@ -216,6 +216,7 @@ MonoBehaviour:
   _fireRate: 3
   _carrierQuadPrefab: {fileID: 6966797209489281780, guid: 040be38e69ec0524eb91d7dc729f69e9, type: 3}
   _dronePrefab: {fileID: 2674057961578373828, guid: 83c912ea4c6ec3e47be7f96f79db4bd8, type: 3}
+  _droneExplosionPrefab: {fileID: 2310148188938813822, guid: eae4622773ac4bb4fbdf99d97b48a2f0, type: 3}
   _spawnDroneTime: 3
   _spawnLocations:
   - {fileID: 2136268136004116022}

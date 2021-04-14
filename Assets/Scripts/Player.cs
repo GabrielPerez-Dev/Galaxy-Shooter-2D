@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float          _fireRate           = 0.15f;
     [SerializeField] private int            _ammoCount          = 0;
     [SerializeField] private int            _maxAmmoCount       = 15;
+    [SerializeField] private int            _missleCount        = 3;
+    [SerializeField] private int            _maxMissleCount     = 3;
 
     [SerializeField] private float          _speed              = 3.5f;
     [SerializeField] private float          _thrustSpeed        = 7f;
@@ -19,6 +21,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject     _laserPrefab        = null;
     [SerializeField] private GameObject     _triplShotPrefab    = null;
     [SerializeField] private GameObject     _godsWishPrefab     = null;
+    [SerializeField] private GameObject     _misslePrefab       = null;
+    [SerializeField] private GameObject     _missleUIPrefab     = null;
     [SerializeField] private GameObject     _shieldPrefab       = null;
     [SerializeField] private GameObject[]   _enginePrefabs      = null;
 
@@ -31,14 +35,14 @@ public class Player : MonoBehaviour
     private bool _isGodsWishActive          = false;
     private bool _isShieldActive            = false;
     private bool _isDead                    = false;
+
     private bool _isAmmoEmpty               = false;
     private bool _isThrusting               = false;
 
     private SpriteRenderer  _shieldRenderer = null;
-
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
-    private Flasher     _flashDamage    = null;
+    private Flasher         _flashDamage    = null;
     private CameraShake     _cameraShake    = null;
     private Vector3         _movement       = Vector3.zero;
     private Color           _tempColor      = Color.clear;
@@ -46,6 +50,7 @@ public class Player : MonoBehaviour
     private float           _thrustDelay    = 0f;
     private float           _canFire        = -1f;
     private float           _canThrust      = -1f;
+
     private int             _shieldStrength = 0;
     private const float     BoundY          = 6.5f;
     private const float     WrapX           = 13f;
@@ -97,6 +102,25 @@ public class Player : MonoBehaviour
         }
     }
 
+    public int MissleCount
+    {
+        get { return _missleCount; }
+        set
+        {
+            _missleCount = value;
+
+            if(_missleCount >= 3)
+            {
+                _missleCount = 3;
+            }
+
+            if(_missleCount <= 0)
+            {
+                _missleUIPrefab.SetActive(false);
+            }
+        }
+    }
+
     public float ThrusterMaxCharge
     {
         get { return _thrustMaxCharge; }
@@ -134,6 +158,7 @@ public class Player : MonoBehaviour
             _shieldPrefab.SetActive(false);
 
         _ammoCount = _maxAmmoCount;
+        _missleCount = _maxMissleCount;
         _thrustCharge = _thrustMaxCharge;
     }
 
@@ -147,7 +172,12 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
-            Shoot();
+            FireProjectile();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            FireMissle();
         }
 
         if (Input.GetKey(KeyCode.LeftShift) && Time.time > _canThrust && _thrustCharge > 0)
@@ -175,7 +205,24 @@ public class Player : MonoBehaviour
         ThrusterCharge -= _thrusterDepleteRate;
     }
 
-    private void Shoot()
+    private void FireMissle()
+    {
+        if(_missleCount == 0)
+        {
+            _missleCount = 0;
+            _audioManager.PlayAmmoEmptySound();
+            _missleUIPrefab.SetActive(false);
+
+            return;
+        }
+
+        _missleCount -= 1;
+
+        var missileInstance = Instantiate(_misslePrefab, transform.position, Quaternion.identity);
+        Destroy(missileInstance.gameObject, 10f);
+    }
+
+    private void FireProjectile()
     {
         if (_ammoCount == 0)
         {
@@ -320,6 +367,13 @@ public class Player : MonoBehaviour
         Lives += 1;
     }
 
+    public void EatThisActive()
+    {
+        _missleUIPrefab.SetActive(true);
+
+        _missleCount = _maxMissleCount;
+    }
+
     public void TripleShotActive()
     {
         _isTripleShotActive = true;
@@ -422,6 +476,16 @@ public class Player : MonoBehaviour
     public int GetLives()
     {
         return _lives;
+    }
+
+    public int GetMissleCount()
+    {
+        return _missleCount;
+    }
+
+    public int GetMaxMissile()
+    {
+        return _maxMissleCount;
     }
 
     public int GetAmmo()
