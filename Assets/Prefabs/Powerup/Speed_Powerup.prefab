@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4824352780815562365}
   m_Layer: 0
   m_Name: Speed_Powerup
-  m_TagString: Untagged
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerupType: 2
-  _probability: 0
+  _spawnRate: 0
   _speed: 3
 --- !u!58 &4824352780815562364
 CircleCollider2D:

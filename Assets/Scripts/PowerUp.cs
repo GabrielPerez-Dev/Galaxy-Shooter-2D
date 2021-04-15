@@ -19,15 +19,23 @@ public class PowerUp : MonoBehaviour
     [SerializeField] private float _speed = 3f;
 
     private AudioManager _audioManager = null;
+    private Player _player = null;
 
     private void Awake()
     {
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        if (_audioManager == null)
+            Debug.Log("AudioManager is null");
+
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        if (_player == null)
+            Debug.Log("Player is null");
     }
 
     private void Update()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        if(!_player.IsPickingUpPowerUp())
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if(transform.position.y < -8f)
         {

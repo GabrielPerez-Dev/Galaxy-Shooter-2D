@@ -157,4 +157,9 @@ public class SpawnManager : MonoBehaviour
     {
         _stopSpawning = true;
     }
+
+    public GameObject[] GetPowerupPrefabs()
+    {
+        return _powerupPrefabs;
+    }
 }

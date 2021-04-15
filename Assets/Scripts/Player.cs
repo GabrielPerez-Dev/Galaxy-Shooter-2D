@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     private bool _isGodsWishActive          = false;
     private bool _isShieldActive            = false;
     private bool _isDead                    = false;
-
+    private bool _isPickingUpPowerup        = false;
     private bool _isAmmoEmpty               = false;
     private bool _isThrusting               = false;
 
@@ -50,8 +50,10 @@ public class Player : MonoBehaviour
     private float           _thrustDelay    = 0f;
     private float           _canFire        = -1f;
     private float           _canThrust      = -1f;
+    private float           _pickUpSpeed    = 8f;
 
     private int             _shieldStrength = 0;
+
     private const float     BoundY          = 6.5f;
     private const float     WrapX           = 13f;
 
@@ -111,7 +113,7 @@ public class Player : MonoBehaviour
 
             if(_missleCount >= _maxMissleCount)
             {
-                _missleCount = _maxAmmoCount;
+                _missleCount = _maxMissleCount;
             }
 
             if(_missleCount <= 0)
@@ -188,6 +190,31 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _isThrusting = false;
+        }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            _isPickingUpPowerup = true;
+            PickUpPowerUp();
+        } 
+        else if (Input.GetKeyUp(KeyCode.C))
+        {
+            _isPickingUpPowerup = false;
+        }
+    }
+
+    private void PickUpPowerUp()
+    {
+        var powerups = GameObject.FindGameObjectsWithTag("Powerup");
+        if (powerups == null) return;
+
+        if(powerups != null)
+        {
+            foreach (var powerup in powerups)
+            {
+                Vector3 direction = powerup.transform.position - transform.position;
+                powerup.transform.position -= direction.normalized * _pickUpSpeed * Time.deltaTime;
+            }
         }
     }
 
@@ -514,5 +541,10 @@ public class Player : MonoBehaviour
     public bool IsDead()
     {
         return _isDead;
+    }
+
+    public bool IsPickingUpPowerUp()
+    {
+        return _isPickingUpPowerup;
     }
 }
