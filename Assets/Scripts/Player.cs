@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float          _speed              = 3.5f;
     [SerializeField] private float          _thrustSpeed        = 7f;
     [SerializeField] private float          _speedBoostAmount   = 5f;
+    [SerializeField] private float          _speedNegateAmount  = 2f;
     [SerializeField] private float          _powerDownTime      = 5f;
 
     [SerializeField] private GameObject     _ExplosionPrefab    = null;
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
     private bool _isTripleShotActive        = false;
     private bool _isGodsWishActive          = false;
     private bool _isShieldActive            = false;
+    private bool _isSpeedNegateActive       = false;
     private bool _isDead                    = false;
     private bool _isPickingUpPowerup        = false;
     private bool _isAmmoEmpty               = false;
@@ -182,16 +184,6 @@ public class Player : MonoBehaviour
             FireMissle();
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) && Time.time > _canThrust && _thrustCharge > 0)
-        {
-            _isThrusting = true;
-            Thrusting();
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            _isThrusting = false;
-        }
-
         if (Input.GetKey(KeyCode.C))
         {
             _isPickingUpPowerup = true;
@@ -200,6 +192,16 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.C))
         {
             _isPickingUpPowerup = false;
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift) && Time.time > _canThrust && _thrustCharge > 0 && !_isSpeedNegateActive)
+        {
+            _isThrusting = true;
+            Thrusting();
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift) || _isSpeedNegateActive)
+        {
+            _isThrusting = false;
         }
     }
 
@@ -386,6 +388,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void SpeedNegateActive()
+    {
+        _isSpeedNegateActive = true;
+        _speed -= _speedNegateAmount;
+        StartCoroutine(SpeedNegatePowerDownRoutine());
+    }
+
+    private IEnumerator SpeedNegatePowerDownRoutine()
+    {
+        yield return new WaitForSeconds(_powerDownTime);
+
+        _speed += _speedNegateAmount;
+
+        _isSpeedNegateActive = false;
+    }
+
     public void AmmoActive()
     {
         _ammoCount = _maxAmmoCount;
@@ -433,11 +451,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(_powerDownTime);
 
         _isGodsWishActive = false;
-    }
-
-    public bool IsGodsWishActive()
-    {
-        return _isGodsWishActive;
     }
 
     public void SpeedBoostActive()

@@ -10,7 +10,6 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float _spawnTime = 5f;
 
     private GameManager _gameManager = null;
-    private GameObject enemyInstance = null;
 
     private bool _stopSpawning = false;
 

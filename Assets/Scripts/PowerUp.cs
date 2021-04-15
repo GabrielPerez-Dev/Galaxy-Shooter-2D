@@ -10,6 +10,7 @@ public enum PowerupType
     Ammo,
     GodsWish,
     EatThis,
+    NegateSpeed,
 }
 
 public class PowerUp : MonoBehaviour
@@ -78,6 +79,9 @@ public class PowerUp : MonoBehaviour
                         break;
                     case PowerupType.EatThis:
                         player.EatThisActive();
+                        break;
+                    case PowerupType.NegateSpeed:
+                        player.SpeedNegateActive();
                         break;
                     default:
                         _powerupType = PowerupType.None;
