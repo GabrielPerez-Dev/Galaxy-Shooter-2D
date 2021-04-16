@@ -5,4 +5,5 @@
     Assault, 
     Carrier,
     Drone,
+    Aggressor,
 }

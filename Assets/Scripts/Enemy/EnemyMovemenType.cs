@@ -4,4 +4,5 @@
     ZigZag,
     Hover,
     Follow,
+    Aggressive,
 }

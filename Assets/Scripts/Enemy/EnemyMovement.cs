@@ -17,6 +17,7 @@ public class EnemyMovement : MonoBehaviour
 
     private bool _canSwitch = false;
     private bool _isHovering = false;
+    private bool _isAggressive = false;
 
     private Player _player = null;
     private Enemy _enemy = null;
@@ -49,6 +50,8 @@ public class EnemyMovement : MonoBehaviour
             InitInfantryMovementType();
         else if (_enemy.GetEnemyType() == EnemyType.Assault)
             InitAssaultMovementType();
+        else if (_enemy.GetEnemyType() == EnemyType.Aggressor)
+            InitAggressorMovementType();
 
         StartCoroutine(SideSwitcherRoutine());
 
@@ -112,6 +115,16 @@ public class EnemyMovement : MonoBehaviour
             }  
         }
 
+        if(_enemyMovementType == EnemyMovemenType.Aggressive)
+        {
+            _isAggressive = true;
+            transform.Translate(Vector3.down * (_speed * 2) * Time.deltaTime);
+        }
+        else
+        {
+            _isAggressive = false;
+        }
+
         if (transform.position.y < -8f)
         {
             if (_player.IsDead()) return;
@@ -129,6 +142,15 @@ public class EnemyMovement : MonoBehaviour
         }
 
         EnemyHorizontalScreenWrap();
+    }
+
+    private void InitAggressorMovementType()
+    {
+        int randomIntValue = Random.Range(0, 2);
+        if (randomIntValue == 0)
+            _enemyMovementType = EnemyMovemenType.ZigZag;
+        else if (randomIntValue == 1)
+            _enemyMovementType = EnemyMovemenType.Default;
     }
 
     private void InitInfantryMovementType()
@@ -184,5 +206,16 @@ public class EnemyMovement : MonoBehaviour
     public bool IsHovering()
     {
         return _isHovering;
+    }
+
+    public bool IsAggressive()
+    {
+        return _isAggressive;
+    }
+
+    public EnemyMovemenType SetMovementType(EnemyMovemenType type)
+    {
+        _enemyMovementType = type;
+        return type;
     }
 }

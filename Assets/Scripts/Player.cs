@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
 
     private bool _isTripleShotActive        = false;
     private bool _isGodsWishActive          = false;
+    private bool _isEatThisActive           = false;
     private bool _isShieldActive            = false;
     private bool _isSpeedNegateActive       = false;
     private bool _isDead                    = false;
@@ -120,6 +121,7 @@ public class Player : MonoBehaviour
 
             if(_missleCount <= 0)
             {
+                _isEatThisActive = false;
                 _missleUIPrefab.SetActive(false);
             }
         }
@@ -179,7 +181,7 @@ public class Player : MonoBehaviour
             FireProjectile();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && Time.time > _canFire)
+        if (Input.GetKeyDown(KeyCode.Q) && Time.time > _canFire && _isEatThisActive)
         {
             FireMissle();
         }
@@ -240,6 +242,7 @@ public class Player : MonoBehaviour
 
         if(_missleCount == 0)
         {
+            _isEatThisActive = false;
             _missleCount = 0;
             _audioManager.PlayAmmoEmptySound();
             _missleUIPrefab.SetActive(false);
@@ -416,6 +419,8 @@ public class Player : MonoBehaviour
 
     public void EatThisActive()
     {
+        _isEatThisActive = true;
+
         _missleUIPrefab.SetActive(true);
 
         _missleCount = _maxMissleCount;
@@ -559,5 +564,10 @@ public class Player : MonoBehaviour
     public bool IsPickingUpPowerUp()
     {
         return _isPickingUpPowerup;
+    }
+
+    public bool IsThrusting()
+    {
+        return _isThrusting;
     }
 }

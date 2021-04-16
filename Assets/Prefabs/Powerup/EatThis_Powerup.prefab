@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 7664154877008613881}
   - component: {fileID: 938754202937915578}
   - component: {fileID: 4878607649734506649}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: EatThis_Powerup
   m_TagString: Powerup
   m_Icon: {fileID: 0}

@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 69616712582714433}
   - component: {fileID: 6915169342673694023}
   - component: {fileID: 4418478577314599788}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield_Powerup
   m_TagString: Powerup
   m_Icon: {fileID: 0}

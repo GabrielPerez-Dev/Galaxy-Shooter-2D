@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7714689531891745227}
   - component: {fileID: 6708558523409440459}
   - component: {fileID: 1579820367165466223}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: NegativeSpeed_Powerup
   m_TagString: Powerup
   m_Icon: {fileID: 0}

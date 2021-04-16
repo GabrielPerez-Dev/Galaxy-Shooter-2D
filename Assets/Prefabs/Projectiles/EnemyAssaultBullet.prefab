@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1868982418239333900}
   - component: {fileID: 7053510166344722527}
   - component: {fileID: 3764802580470412804}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: EnemyAssaultBullet
   m_TagString: Enemy Projectile
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: -1
   m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.41762733, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

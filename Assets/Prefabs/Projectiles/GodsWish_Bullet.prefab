@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2716148194149976583}
   - component: {fileID: 2716148194149976580}
   - component: {fileID: 2716148194149976581}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GodsWish_Bullet
   m_TagString: Projectile
   m_Icon: {fileID: 0}
