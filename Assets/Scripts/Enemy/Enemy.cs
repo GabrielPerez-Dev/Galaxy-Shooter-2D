@@ -14,6 +14,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float        _fireRate           = 3.0f;
 
     protected EnemyMovement     _movement       = null;
+    protected SpawnManager _spawnManager = null;
     protected AudioManager      _audioManager   = null;
     protected Flasher _flasher = null;
     protected Player _player = null;
@@ -40,6 +41,10 @@ public abstract class Enemy : MonoBehaviour
         _flasher = GetComponent<Flasher>();
         if (_flasher == null)
             Debug.LogError("Flasher is null");
+
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+            Debug.Log("SpawnManager is null");
     }
 
     private void Start()
@@ -98,6 +103,7 @@ public abstract class Enemy : MonoBehaviour
         _collider.enabled = false;
         _movement.Speed = 1f;
         _audioManager.PlayExplosionSound();
+        _spawnManager.EnemyDefeated();
         Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject, 0.2f);
     }

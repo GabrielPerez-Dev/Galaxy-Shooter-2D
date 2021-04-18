@@ -9,15 +9,19 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI    _gameOverText       = null;
     [SerializeField] private TextMeshProUGUI    _restartText        = null;
     [SerializeField] private TextMeshProUGUI    _sceneStartText     = null;
+    [SerializeField] private TextMeshProUGUI    _newWaveText        = null;
     [SerializeField] private TextMeshProUGUI    _ammoText           = null;
     [SerializeField] private TextMeshProUGUI    _missleText         = null;
+    [SerializeField] private TextMeshProUGUI    _victoryText        = null;
     [SerializeField] private Image              _livesImg           = null;
     [SerializeField] private Image              _thrusterChargeImg  = null;
     [SerializeField] private Sprite[]           _livesSprites       = null;
     [SerializeField] private GameObject         _pausePanel         = null;
 
     private float       _thrusterFill   = 0f;
+
     private GameManager _gameManager    = null;
+    private SpawnManager _spawnManager = null;
     private Player      _player         = null;
 
     private void Awake()
@@ -27,15 +31,25 @@ public class UIManager : MonoBehaviour
 
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null) Debug.Log("Player script is null");
+
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+            Debug.Log("SpawnManage is null");
     }
 
     private void Start()
     {
         _pausePanel.SetActive(false);
         _sceneStartText.gameObject.SetActive(true);
+        _newWaveText.gameObject.SetActive(true);
 
         if(_gameManager.IsNewScene)
             StartCoroutine(StartSceneTimerRoutine());
+
+        if (_gameManager.IsNewWave)
+        {
+            StartCoroutine(StartWaveRoutine());
+        }
 
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
@@ -83,8 +97,31 @@ public class UIManager : MonoBehaviour
         _gameManager.IsNewScene = false;
     }
 
+    public IEnumerator StartWaveRoutine()
+    {
+        _newWaveText.gameObject.SetActive(true);
+
+        _newWaveText.text = "";
+        yield return new WaitForSeconds(1f);
+        _newWaveText.text = "Wave " + _spawnManager.GetCurrentWave();
+        yield return new WaitForSeconds(2f);
+
+        _newWaveText.fontSize = 120;
+        _newWaveText.text = "GO!";
+        yield return new WaitForSeconds(1f);
+
+        _newWaveText.gameObject.SetActive(false);
+
+        _gameManager.IsNewWave = false;
+    }
+
     public void PausePanel(bool activate)
     {
         _pausePanel.SetActive(activate);
+    }
+
+    public void VictoryTextActive()
+    {
+        _victoryText.gameObject.SetActive(true);
     }
 }

@@ -225,7 +225,7 @@ MonoBehaviour:
   _enemyType: 5
   _explosionPrefab: {fileID: 2650851927687773958, guid: 378c907d198840e4fa37a825f300b701, type: 3}
   _shieldPrefab: {fileID: 6191085354549199983}
-  _spawnRate: 7
+  _spawnRate: 3
   _lives: 2
   _maxLives: 2
   _giveDamage: 1
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyMovementType: 0
-  _speed: 4
+  _speed: 3
 --- !u!114 &6191085355558116293
 MonoBehaviour:
   m_ObjectHideFlags: 0

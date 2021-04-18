@@ -236,7 +236,7 @@ MonoBehaviour:
   _enemyType: 2
   _explosionPrefab: {fileID: 1675648454040300859, guid: 78b60b633b63fbd4cbbc7b6c99e65da3, type: 3}
   _shieldPrefab: {fileID: 3168564997536965165}
-  _spawnRate: 5
+  _spawnRate: 4
   _lives: 3
   _maxLives: 3
   _giveDamage: 1

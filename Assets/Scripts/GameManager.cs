@@ -3,7 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private bool _isNewScene;
+    [SerializeField] private bool _isNewScene = false;
+    [SerializeField] private bool _isNewWave = false;
 
     private UIManager _uiManager = null;
     private bool isPause = false;
@@ -15,9 +16,15 @@ public class GameManager : MonoBehaviour
         set{ _isNewScene = value; } 
     }
 
+    public bool IsNewWave
+    {
+        get { return _isNewWave; }
+        set { _isNewWave = value; }
+    }
+
     private void Awake()
     {
-        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         if (_uiManager == null)
             Debug.LogError("UIManager is NULL");
     }

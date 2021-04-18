@@ -3,21 +3,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Lives and Score Properties")]
     [SerializeField] private int            _lives              = 3;
     [SerializeField] private int            _score              = 0;
 
+    [Header("Weapon Properties")]
     [SerializeField] private float          _fireRate           = 0.15f;
     [SerializeField] private int            _ammoCount          = 0;
     [SerializeField] private int            _maxAmmoCount       = 15;
     [SerializeField] private int            _missleCount        = 3;
     [SerializeField] private int            _maxMissleCount     = 3;
 
+    [Header("Speed and Power-up time Properties")]
     [SerializeField] private float          _speed              = 3.5f;
     [SerializeField] private float          _thrustSpeed        = 7f;
     [SerializeField] private float          _speedBoostAmount   = 5f;
     [SerializeField] private float          _speedNegateAmount  = 2f;
     [SerializeField] private float          _powerDownTime      = 5f;
 
+    [Header("Prefab References")]
     [SerializeField] private GameObject     _ExplosionPrefab    = null;
     [SerializeField] private GameObject     _laserPrefab        = null;
     [SerializeField] private GameObject     _triplShotPrefab    = null;
@@ -27,6 +31,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject     _shieldPrefab       = null;
     [SerializeField] private GameObject[]   _enginePrefabs      = null;
 
+    [Header("Thruster Properties")]
     [SerializeField] private float          _thrustCharge           = 0f;
     [SerializeField] private float          _thrustMaxCharge        = 20f;
     [SerializeField] private float          _thrusterDepleteRate    = 0.05f;

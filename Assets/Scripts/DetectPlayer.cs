@@ -15,7 +15,6 @@ public class DetectPlayer : MonoBehaviour
     {
         if (other.gameObject.layer == 7)
         {
-            Debug.Log(other.gameObject.name);
             _movement.SetMovementType(EnemyMovemenType.Aggressive);
         }
     }

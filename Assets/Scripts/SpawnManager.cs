@@ -3,60 +3,102 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject[] _enemyPrefabs = null;
+    //[SerializeField] private GameObject[] _enemyPrefabs = null;
     [SerializeField] private GameObject[] _powerupPrefabs = null;
     [SerializeField] private GameObject[] _asteroidPrefabs = null;
     [SerializeField] private GameObject _enemyContainer = null;
-    [SerializeField] private float _spawnTime = 5f;
 
     private GameManager _gameManager = null;
-
+    private UIManager _uiManager = null;
     private bool _stopSpawning = false;
+    private float _waitToSpawn = 4f;
 
-    private float _waitToSpawn = 5f;
+    [Header("Wave Settings")]
+    [SerializeField] private Wave[] _waves;
+    private int _currentWave = 0;
+    private int _totalWaves = 0;
+
+    private int _totalEnemiesInCurrentWave = 0;
+    private int _enemiesLeftInWave = 0;
+    private int _enemiesSpawned = 0;
+
+    private float _timeBetweenEnemies = 2f;
 
     private void Awake()
     {
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (_gameManager == null)
             Debug.Log("GameManager is null");
+
+        _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        if (_uiManager == null)
+            Debug.Log("UIManager is null");
     }
 
     private void Start()
     {
-        StartCoroutine(SpawnEnemyRoutine());
+        _currentWave = -1;
+        _totalWaves = _waves.Length - 1; // Minus 1 because we are using 0 index
+
+        StartNextWave();
+
+        //StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
         StartCoroutine(SpawnAsteroidRoutine());
     }
 
+    private void StartNextWave()
+    {
+        _currentWave++;
+
+        if (_currentWave > _totalWaves)
+        {
+            _uiManager.VictoryTextActive();
+            return;
+        }
+
+        _totalEnemiesInCurrentWave = _waves[_currentWave].GetNumberOfEnemiesPerWave();
+        _enemiesLeftInWave = 0;
+        _enemiesSpawned = 0;
+
+        StartCoroutine(SpawnEnemyRoutine());
+    }
+
     private IEnumerator SpawnEnemyRoutine()
     {
-        if (_gameManager.IsNewScene)
+        if (_gameManager.IsNewWave)
         {
+            StartCoroutine(_uiManager.StartWaveRoutine());
             yield return new WaitForSeconds(_waitToSpawn);
         }
 
-        while (!_stopSpawning)
+        while (!_stopSpawning && _enemiesSpawned < _totalEnemiesInCurrentWave)
         {
+            _enemiesSpawned++;
+            _enemiesLeftInWave++;
+
             float randomX = Random.Range(-11, 11);
             Vector3 randomXposition = new Vector3(randomX, 8, 0);
 
-            var enemyInstance = Instantiate(GetEnemyGameObject(), randomXposition, Quaternion.identity);
+            var enemyInstance = Instantiate(GetEnemyGOwithProbability(), randomXposition, Quaternion.identity);
 
-            enemyInstance.transform.parent = _enemyContainer.transform;
+            if(enemyInstance != null)
+                enemyInstance.transform.parent = _enemyContainer.transform;
 
-            yield return new WaitForSeconds(_spawnTime);
+            yield return new WaitForSeconds(_timeBetweenEnemies);
         }
+
+        yield return null;
     }
 
     private IEnumerator SpawnPowerUpRoutine()
     {
-        if (_gameManager.IsNewScene)
+        if (_gameManager.IsNewScene || _gameManager.IsNewWave)
         {
             yield return new WaitForSeconds(_waitToSpawn);
         }
 
-        while (!_stopSpawning)
+        while (!_stopSpawning && _enemiesSpawned < _totalEnemiesInCurrentWave)
         {
             float randomX = Random.Range(-11, 11);
             Vector3 randomXposition = new Vector3(randomX, 8, 0);
@@ -68,13 +110,19 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private GameObject GetEnemyGameObject()
+    private GameObject GetEnemyGOwithProbability()
     {
         float sum = 0f;
-        foreach (var enemyGO in _enemyPrefabs)
+
+        for (int i = 0; i < _waves.Length; i++)
         {
-            var enemy = enemyGO.GetComponent<Enemy>();
-            sum += enemy.GetSpawnRate();
+            var enemies = _waves[_currentWave].GetEnemies();
+            for (int x = 0; x < enemies.Length; x++)
+            {
+                var enemyGO = enemies[x];
+                var enemy = enemyGO.GetComponent<Enemy>();
+                sum += enemy.GetSpawnRate();
+            }
         }
 
         float randomRate = 0f;
@@ -87,12 +135,17 @@ public class SpawnManager : MonoBehaviour
         }
         while (randomRate == sum);
 
-        foreach (var enemyGO in _enemyPrefabs)
+        for (int i = 0; i < _waves.Length; i++)
         {
-            var enemy = enemyGO.GetComponent<Enemy>();
-            if (randomRate < enemy.GetSpawnRate())
-                return enemyGO;
-            randomRate -= enemy.GetSpawnRate();
+            var enemies = _waves[_currentWave].GetEnemies();
+            for (int x = 0; x < enemies.Length; x++)
+            {
+                var enemyGO = enemies[x];
+                var enemy = enemyGO.GetComponent<Enemy>();
+                if (randomRate < enemy.GetSpawnRate())
+                    return enemyGO;
+                randomRate -= enemy.GetSpawnRate();
+            }
         }
 
         return null;
@@ -134,12 +187,12 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnAsteroidRoutine()
     {
-        if (_gameManager.IsNewScene)
+        if (_gameManager.IsNewScene || _gameManager.IsNewWave)
         {
             yield return new WaitForSeconds(_waitToSpawn);
         }
 
-        while (!_stopSpawning)
+        while (!_stopSpawning && _enemiesSpawned < _totalEnemiesInCurrentWave)
         {
             float randomX = Random.Range(-11, 11);
             Vector3 randonXposition = new Vector3(randomX, 9, 0);
@@ -152,13 +205,24 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    public void EnemyDefeated()
+    {
+        _enemiesLeftInWave--;
+
+        if(_enemiesLeftInWave == 0 && _enemiesSpawned == _totalEnemiesInCurrentWave)
+        {
+            _gameManager.IsNewWave = true;
+            StartNextWave();
+        }
+    }
+
     public void StopSpawning()
     {
         _stopSpawning = true;
     }
 
-    public GameObject[] GetPowerupPrefabs()
+    public int GetCurrentWave()
     {
-        return _powerupPrefabs;
+        return _currentWave + 1;
     }
 }
