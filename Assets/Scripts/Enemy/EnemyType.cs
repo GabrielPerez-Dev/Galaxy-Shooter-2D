@@ -6,4 +6,5 @@
     Carrier,
     Drone,
     Aggressor,
+    FinalBoss,
 }

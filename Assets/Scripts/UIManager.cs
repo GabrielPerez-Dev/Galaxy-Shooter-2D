@@ -40,8 +40,17 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         _pausePanel.SetActive(false);
-        _sceneStartText.gameObject.SetActive(true);
-        _newWaveText.gameObject.SetActive(true);
+
+        if(_gameManager.IsNewScene == true || _gameManager.IsNewWave == true)
+        {
+            _sceneStartText.gameObject.SetActive(true);
+            _newWaveText.gameObject.SetActive(true);
+        }
+        else
+        {
+            _sceneStartText.gameObject.SetActive(false);
+            _newWaveText.gameObject.SetActive(false);
+        }
 
         if(_gameManager.IsNewScene)
             StartCoroutine(StartSceneTimerRoutine());
@@ -123,5 +132,10 @@ public class UIManager : MonoBehaviour
     public void VictoryTextActive()
     {
         _victoryText.gameObject.SetActive(true);
+    }
+
+    public void GameOverDeActivate()
+    {
+        _gameOverText.gameObject.SetActive(false);
     }
 }

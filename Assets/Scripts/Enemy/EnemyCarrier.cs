@@ -9,7 +9,7 @@ public class EnemyCarrier : Enemy
     [Header("Spawn Drone Settings")]
     [SerializeField] private GameObject _dronePrefab = null;
     [SerializeField] private float _spawnDroneTime = 24f;
-    [SerializeField] private Transform[] _spawnLocations = null;
+    [SerializeField] protected Transform[] _spawnLocations = null;
 
     private void Start()
     {
@@ -31,7 +31,7 @@ public class EnemyCarrier : Enemy
         }
     }
 
-    private IEnumerator SpawnDronesRoutine()
+    protected IEnumerator SpawnDronesRoutine()
     {
         int count = 0;
 

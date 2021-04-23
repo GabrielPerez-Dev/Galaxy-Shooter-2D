@@ -70,7 +70,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 439085263
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 3625043607559282579, guid: 0d267bc78a0864eb48358689b29ed20a, type: 3}
   m_Color: {r: 1, g: 0, b: 0.36770058, a: 1}
   m_FlipX: 0
@@ -134,6 +134,9 @@ MonoBehaviour:
   _enemyType: 4
   _explosionPrefab: {fileID: 2650851927687773958, guid: 378c907d198840e4fa37a825f300b701, type: 3}
   _shieldPrefab: {fileID: 0}
+  _isShieldActive: 0
+  _shieldStrength: 0
+  _shieldProbability: 0.2
   _spawnRate: 0
   _lives: 1
   _maxLives: 1
@@ -141,6 +144,7 @@ MonoBehaviour:
   _givePoints: 20
   _collider: {fileID: 2674057961578373832}
   _fireRate: 3
+  _isFinalBoss: 0
   _explosionDronePrefab: {fileID: 2310148188938813822, guid: eae4622773ac4bb4fbdf99d97b48a2f0, type: 3}
 --- !u!114 &2674057961578373835
 MonoBehaviour:
@@ -156,6 +160,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyMovementType: 3
   _speed: 1
+  _bossPositions: []
+  _startWaitTime: 0
+  _isPatrolling: 0
 --- !u!114 &2674057961578373834
 MonoBehaviour:
   m_ObjectHideFlags: 0

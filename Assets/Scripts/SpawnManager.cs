@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    //[SerializeField] private GameObject[] _enemyPrefabs = null;
     [SerializeField] private GameObject[] _powerupPrefabs = null;
     [SerializeField] private GameObject[] _asteroidPrefabs = null;
     [SerializeField] private GameObject _enemyContainer = null;
@@ -11,6 +10,7 @@ public class SpawnManager : MonoBehaviour
     private GameManager _gameManager = null;
     private UIManager _uiManager = null;
     private bool _stopSpawning = false;
+
     private float _waitToSpawn = 4f;
 
     [Header("Wave Settings")]
@@ -24,6 +24,8 @@ public class SpawnManager : MonoBehaviour
 
     private float _timeBetweenEnemies = 2f;
 
+    private AudioManager _audioManager = null;
+
     private void Awake()
     {
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
@@ -33,6 +35,10 @@ public class SpawnManager : MonoBehaviour
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         if (_uiManager == null)
             Debug.Log("UIManager is null");
+
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        if (_audioManager == null)
+            Debug.Log("AudioManager is null");
     }
 
     private void Start()
@@ -42,7 +48,6 @@ public class SpawnManager : MonoBehaviour
 
         StartNextWave();
 
-        //StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
         StartCoroutine(SpawnAsteroidRoutine());
     }
@@ -54,6 +59,16 @@ public class SpawnManager : MonoBehaviour
         if (_currentWave > _totalWaves)
         {
             _uiManager.VictoryTextActive();
+            var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                _audioManager.PlayDroneExplosionSound();
+                
+                Destroy(enemies[i].gameObject);
+            }
+
+            Time.timeScale = 0;
+
             return;
         }
 
@@ -70,9 +85,10 @@ public class SpawnManager : MonoBehaviour
         {
             StartCoroutine(_uiManager.StartWaveRoutine());
             yield return new WaitForSeconds(_waitToSpawn);
+            _gameManager.IsNewWave = false;
         }
 
-        while (!_stopSpawning && _enemiesSpawned < _totalEnemiesInCurrentWave)
+        while (!_stopSpawning && !_gameManager.IsNewWave && _enemiesSpawned < _totalEnemiesInCurrentWave)
         {
             _enemiesSpawned++;
             _enemiesLeftInWave++;
@@ -80,9 +96,9 @@ public class SpawnManager : MonoBehaviour
             float randomX = Random.Range(-11, 11);
             Vector3 randomXposition = new Vector3(randomX, 8, 0);
 
-            var enemyInstance = Instantiate(GetEnemyGOwithProbability(), randomXposition, Quaternion.identity);
+            var enemyInstance = Instantiate(GetEnemyGOwithProbability(), randomXposition, Quaternion.identity); 
 
-            if(enemyInstance != null)
+            if (enemyInstance != null)
                 enemyInstance.transform.parent = _enemyContainer.transform;
 
             yield return new WaitForSeconds(_timeBetweenEnemies);
@@ -98,7 +114,7 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(_waitToSpawn);
         }
 
-        while (!_stopSpawning && _enemiesSpawned < _totalEnemiesInCurrentWave)
+        while (!_stopSpawning)
         {
             float randomX = Random.Range(-11, 11);
             Vector3 randomXposition = new Vector3(randomX, 8, 0);
@@ -192,7 +208,7 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(_waitToSpawn);
         }
 
-        while (!_stopSpawning && _enemiesSpawned < _totalEnemiesInCurrentWave)
+        while (!_stopSpawning)
         {
             float randomX = Random.Range(-11, 11);
             Vector3 randonXposition = new Vector3(randomX, 9, 0);

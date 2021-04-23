@@ -10,7 +10,7 @@ public class EnemyAssault : Enemy
 
     protected override void OnAttack()
     {
-        if(Time.time > _canFire && _movement.IsHovering() == true)
+        if (Time.time > _canFire && _movement.IsHovering() == true)
         {
             float randomFireRate = Random.Range(1.5f, 3f);
 

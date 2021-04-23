@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer  _shieldRenderer = null;
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
-    private Flasher         _flashDamage    = null;
+    private Flash         _flashDamage    = null;
     private CameraShake     _cameraShake    = null;
     private Vector3         _movement       = Vector3.zero;
     private Color           _tempColor      = Color.clear;
@@ -156,7 +156,7 @@ public class Player : MonoBehaviour
         if (_cameraShake == null)
             Debug.Log("CameraShake is null");
 
-        _flashDamage = GetComponent<Flasher>();
+        _flashDamage = GetComponent<Flash>();
         if (_flashDamage == null)
             Debug.Log("FlashDamage is null");
     }
@@ -373,7 +373,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        _flashDamage.FlashWhenHit();
+        _flashDamage.WhenHit();
 
         _lives -= damageAmount;
 

@@ -15,12 +15,12 @@ public class DetectPlayer : MonoBehaviour
     {
         if (other.gameObject.layer == 7)
         {
-            _movement.SetMovementType(EnemyMovemenType.Aggressive);
+            _movement.SetMovementType(EnemyMovementType.Aggressive);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        _movement.SetMovementType(EnemyMovemenType.Default);
+        _movement.SetMovementType(EnemyMovementType.Default);
     }
 }

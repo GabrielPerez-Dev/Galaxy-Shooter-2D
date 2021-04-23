@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class Flasher : MonoBehaviour
+public class Flash : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _renderer = null;
 
-    public void FlashWhenHit()
+    public void WhenHit()
     {
         StartCoroutine(FlashSpriteRoutine());
     }

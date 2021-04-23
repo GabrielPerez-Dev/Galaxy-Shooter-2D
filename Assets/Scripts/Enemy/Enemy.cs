@@ -5,6 +5,9 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected EnemyType    _enemyType          = EnemyType.None;
     [SerializeField] protected GameObject   _explosionPrefab    = null;
     [SerializeField] protected GameObject   _shieldPrefab       = null;
+    [SerializeField] protected bool         _isShieldActive     = false;
+    [SerializeField] protected int          _shieldStrength     = 0;
+    [SerializeField] private float          _shieldProbability  = 0.2f;
     [SerializeField] private float          _spawnRate          = 0f;
     [SerializeField] protected int          _lives              = 1;
     [SerializeField] private int            _maxLives           = 1;
@@ -12,17 +15,17 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private int            _givePoints         = 10;
     [SerializeField] private Collider2D     _collider           = null;
     [SerializeField] protected float        _fireRate           = 3.0f;
+    [SerializeField] private bool           _isFinalBoss        = false;
 
     protected EnemyMovement     _movement       = null;
-    protected SpawnManager _spawnManager = null;
+    protected SpawnManager      _spawnManager   = null;
     protected AudioManager      _audioManager   = null;
-    protected Flasher _flasher = null;
-    protected Player _player = null;
+    protected Flash             _flash        = null;
+    protected Player            _player         = null;
 
-    protected float _canFire = -1f;
+    protected float             _canFire        = -1f;
 
-    protected bool _isDead = false;
-    private bool _isShieldActive = false;
+    protected bool              _isDead         = false;
 
     private void Awake()
     {
@@ -38,8 +41,8 @@ public abstract class Enemy : MonoBehaviour
         if (_audioManager == null)
             Debug.LogError("AudioManager is null");
 
-        _flasher = GetComponent<Flasher>();
-        if (_flasher == null)
+        _flash = GetComponent<Flash>();
+        if (_flash == null)
             Debug.LogError("Flasher is null");
 
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
@@ -51,14 +54,18 @@ public abstract class Enemy : MonoBehaviour
     {
         _lives = _maxLives;
 
-        float shieldProbability = 0.2f;
-        if (Random.value < shieldProbability)
+        if (Random.value < _shieldProbability)
         {
             if (_enemyType != EnemyType.Carrier && _enemyType != EnemyType.Drone)
             {
                 _isShieldActive = true;
                 _shieldPrefab.SetActive(true);
             }
+        }
+
+        if (_isShieldActive)
+        {
+            _shieldPrefab.SetActive(true);
         }
     }
 
@@ -69,11 +76,13 @@ public abstract class Enemy : MonoBehaviour
 
     protected abstract void OnAttack();
 
-    private void TakeDamage(int amount)
+    protected void TakeDamage(int amount)
     {
         if (_isShieldActive)
         {
-            if(_enemyType != EnemyType.Carrier && _enemyType != EnemyType.Drone)
+            _shieldStrength--;
+
+            if (_enemyType != EnemyType.Carrier && _enemyType != EnemyType.Drone && _shieldStrength == 0)
             {
                 _isShieldActive = false;
                 _shieldPrefab.SetActive(false);
@@ -82,7 +91,7 @@ public abstract class Enemy : MonoBehaviour
             return;
         }
 
-        _flasher.FlashWhenHit();
+        _flash.WhenHit();
 
         _lives -= amount;
 
@@ -159,5 +168,10 @@ public abstract class Enemy : MonoBehaviour
     public EnemyType GetEnemyType()
     {
         return _enemyType;
+    }
+
+    public bool IsFinalBoss()
+    {
+        return _isFinalBoss;
     }
 }

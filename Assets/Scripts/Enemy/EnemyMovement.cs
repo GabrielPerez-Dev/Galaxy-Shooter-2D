@@ -3,21 +3,28 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] private EnemyMovemenType _enemyMovementType = EnemyMovemenType.Default;
+    [SerializeField] private EnemyMovementType _enemyMovementType = EnemyMovementType.Default;
     [SerializeField] private float _speed = 4f;
+    [SerializeField] private Transform[] _bossPositions = null;
+    [SerializeField] private float _startWaitTime = 0f;
 
     private Transform _target = null;
     private Vector3 _right = Vector3.right;
     private Vector3 _left = Vector3.left;
 
     private int randomSide = 0;
+    private int _randomPoint = 0;
     private float _switchSideRate = 0f;
     private float _minSeconds = 2f;
     private float _maxSeconds = 3f;
+    private float _waitTime = 0f;
+    private float _chanceToChangeDirection = 0.005f;
 
     private bool _canSwitch = false;
     private bool _isHovering = false;
+    [SerializeField] private bool _isPatrolling = false;
     private bool _isAggressive = false;
+    private bool _isLeftRight = false;
 
     private Player _player = null;
     private Enemy _enemy = null;
@@ -42,10 +49,13 @@ public class EnemyMovement : MonoBehaviour
         if (_target == null)
             Debug.Log("Target is null");
 
+        _bossPositions = GameObject.Find("BossPositions").transform.GetComponentsInChildren<Transform>();
     }
 
     private void Start()
     {
+        _waitTime = _startWaitTime;
+
         if (_enemy.GetEnemyType() == EnemyType.Infantry)
             InitInfantryMovementType();
         else if (_enemy.GetEnemyType() == EnemyType.Assault)
@@ -54,9 +64,11 @@ public class EnemyMovement : MonoBehaviour
             InitAggressorMovementType();
 
         StartCoroutine(SideSwitcherRoutine());
+        
+        if(_isLeftRight)
+            StartCoroutine(GoLeftRightRoutine());
 
-        float randomValue = Random.Range(1.5f, 3f);
-        //_speed = randomValue;
+        _randomPoint = Random.Range(0, _bossPositions.Length);
     }
 
     private void Update()
@@ -66,12 +78,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void Movement()
     {
-        if (_enemyMovementType == EnemyMovemenType.Default)
+        if (_enemyMovementType == EnemyMovementType.Default)
         {
             transform.Translate(Vector3.down.normalized * _speed * Time.deltaTime);
         }
         
-        if (_enemyMovementType == EnemyMovemenType.ZigZag)
+        if (_enemyMovementType == EnemyMovementType.ZigZag)
         {
             if (!_canSwitch)
             {
@@ -85,7 +97,7 @@ public class EnemyMovement : MonoBehaviour
                 transform.Translate((Vector3.down + _left).normalized * _speed * Time.deltaTime);
         }
         
-        if(_enemyMovementType == EnemyMovemenType.Hover)
+        if(_enemyMovementType == EnemyMovementType.Hover)
         {
             if (transform.position.y > 4f)
             {
@@ -105,7 +117,7 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
-        if(_enemyMovementType == EnemyMovemenType.Follow)
+        if(_enemyMovementType == EnemyMovementType.Follow)
         {
             if (_target == null) return;
 
@@ -115,7 +127,7 @@ public class EnemyMovement : MonoBehaviour
             }  
         }
 
-        if(_enemyMovementType == EnemyMovemenType.Aggressive)
+        if(_enemyMovementType == EnemyMovementType.Aggressive)
         {
             _isAggressive = true;
             transform.Translate(Vector3.down * (_speed * 2) * Time.deltaTime);
@@ -125,7 +137,99 @@ public class EnemyMovement : MonoBehaviour
             _isAggressive = false;
         }
 
-        if (transform.position.y < -8f)
+
+        if (_enemyMovementType == EnemyMovementType.Patrol)
+        {
+            _isPatrolling = true;
+
+            Vector3 pos = transform.position;
+            pos = Vector3.MoveTowards(transform.position, _bossPositions[_randomPoint].position, _speed * Time.deltaTime);
+            transform.position = pos;
+
+            if (Vector3.Distance(pos, _bossPositions[_randomPoint].position) < 0.2f)
+            {
+                if (_waitTime <= 0)
+                {
+                    _randomPoint = Random.Range(0, _bossPositions.Length);
+                    _waitTime = _startWaitTime;
+                }
+                else
+                {
+                    _waitTime -= Time.deltaTime;
+                }
+            }
+        }
+
+        if(_enemyMovementType == EnemyMovementType.ToAnchorPoint)
+        {
+            _isPatrolling = false;
+
+            Vector3 pos = transform.position;
+
+            if (pos.y >= _bossPositions[1].position.y || pos.y <= _bossPositions[1].position.y)
+            {
+                pos = Vector3.MoveTowards(transform.position, _bossPositions[1].position, _speed * Time.deltaTime);
+            }
+            else
+            {
+                pos.y = _bossPositions[1].position.y;
+            }
+
+            if (transform.position.y == 4f)
+            {
+                _enemyMovementType = EnemyMovementType.Patrol;
+            }
+
+            transform.position = pos;
+        }
+
+        if (_enemyMovementType == EnemyMovementType.Panic)
+        {
+            _isPatrolling = false;
+
+            Vector3 pos = transform.position;
+
+            if (pos.y >= _bossPositions[1].position.y || pos.y <= _bossPositions[1].position.y)
+            {
+                pos = Vector3.MoveTowards(pos, _bossPositions[1].position, _speed * Time.deltaTime);
+            }
+            
+            if(pos.y == _bossPositions[1].position.y)
+            {
+                pos = new Vector3(transform.position.x, 4f, 0);
+
+                _isLeftRight = true;
+
+                SetMovementType(EnemyMovementType.LeftRight);
+            }
+
+            transform.position = pos;
+        }
+
+        if (_enemyMovementType == EnemyMovementType.LeftRight)
+        {
+            Vector3 pos = transform.position;
+            pos.x += _speed * Time.deltaTime;
+            transform.position = pos;
+
+            if (_isLeftRight)
+            {
+                if (pos.x < -10f)
+                {
+                    _speed = Mathf.Abs(_speed);
+                }
+                else if (pos.x > 10f)
+                {
+                    _speed = -Mathf.Abs(_speed);
+                }
+                else if (Random.value < _chanceToChangeDirection)
+                {
+                    _speed *= -1;
+                }
+            }
+        }
+
+        if (transform.position.y < -8f && _enemy.GetEnemyType() != EnemyType.FinalBoss)
         {
             if (_player.IsDead()) return;
             if (_enemy.GetLives() > 1)
@@ -144,31 +248,37 @@ public class EnemyMovement : MonoBehaviour
         EnemyHorizontalScreenWrap();
     }
 
+    private IEnumerator GoLeftRightRoutine()
+    {
+        float _randomTime = Random.Range(1, 5);
+        yield return new WaitForSeconds(_randomTime);
+    }
+
     private void InitAggressorMovementType()
     {
         int randomIntValue = Random.Range(0, 2);
         if (randomIntValue == 0)
-            _enemyMovementType = EnemyMovemenType.ZigZag;
+            _enemyMovementType = EnemyMovementType.ZigZag;
         else if (randomIntValue == 1)
-            _enemyMovementType = EnemyMovemenType.Default;
+            _enemyMovementType = EnemyMovementType.Default;
     }
 
     private void InitInfantryMovementType()
     {
         int randomIntValue = Random.Range(0, 2);
         if (randomIntValue == 0)
-            _enemyMovementType = EnemyMovemenType.Default;
+            _enemyMovementType = EnemyMovementType.Default;
         else if (randomIntValue == 1)
-            _enemyMovementType = EnemyMovemenType.ZigZag;
+            _enemyMovementType = EnemyMovementType.ZigZag;
     }
 
     private void InitAssaultMovementType()
     {
         int randomIntValue = Random.Range(0, 2);
         if (randomIntValue == 0)
-            _enemyMovementType = EnemyMovemenType.ZigZag;
+            _enemyMovementType = EnemyMovementType.ZigZag;
         else if (randomIntValue == 1)
-            _enemyMovementType = EnemyMovemenType.Hover;
+            _enemyMovementType = EnemyMovementType.Hover;
     }
 
     private void EnemyHorizontalScreenWrap()
@@ -213,9 +323,19 @@ public class EnemyMovement : MonoBehaviour
         return _isAggressive;
     }
 
-    public EnemyMovemenType SetMovementType(EnemyMovemenType type)
+    public EnemyMovementType SetMovementType(EnemyMovementType type)
     {
         _enemyMovementType = type;
         return type;
+    }
+
+    public EnemyMovementType GetMovementType()
+    {
+        return _enemyMovementType;
+    }
+
+    public bool IsPatrolling()
+    {
+        return _isPatrolling;
     }
 }
