@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerupType: 6
+  _explosionPrefab: {fileID: 2650851927687773958, guid: 378c907d198840e4fa37a825f300b701, type: 3}
   _spawnRate: 2
   _speed: 5
 --- !u!58 &9203467777291679659

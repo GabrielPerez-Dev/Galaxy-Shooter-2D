@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8884563376547605422}
   m_Layer: 0
   m_Name: EnemyLaser2
-  m_TagString: Untagged
+  m_TagString: Enemy Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39,6 +39,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8884563376547605422}
     m_Modifications:
+    - target: {fileID: 2926749057688218994, guid: 6556739197114b64d856555b21e9f8f5, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Projectile
+      objectReference: {fileID: 0}
     - target: {fileID: 4409351582167839357, guid: 6556739197114b64d856555b21e9f8f5, type: 3}
       propertyPath: m_Name
       value: EnemyLaser
@@ -112,6 +116,10 @@ PrefabInstance:
     - target: {fileID: 4581346098859084997, guid: 6556739197114b64d856555b21e9f8f5, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533759484326286352, guid: 6556739197114b64d856555b21e9f8f5, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Projectile
       objectReference: {fileID: 0}
     - target: {fileID: 8560185353433610870, guid: 6556739197114b64d856555b21e9f8f5, type: 3}
       propertyPath: m_RootOrder

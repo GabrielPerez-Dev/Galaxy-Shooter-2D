@@ -16,6 +16,7 @@ public enum PowerupType
 public class PowerUp : MonoBehaviour
 {
     [SerializeField] private PowerupType _powerupType = PowerupType.None;
+    [SerializeField] private GameObject _explosionPrefab = null;
     [SerializeField] private float _spawnRate = 0f;
     [SerializeField] private float _speed = 3f;
 
@@ -92,6 +93,23 @@ public class PowerUp : MonoBehaviour
             _audioManager.PlayPowerupSound();
 
             Destroy(gameObject);
+        }
+
+        if (other.gameObject.CompareTag("Enemy Projectile"))
+        {
+            Projectile[] projectiles = other.GetComponents<Projectile>();
+            for (int i = 0; i < projectiles.Length; i++)
+            {
+                if (projectiles[i].GetIsEnemyLaser() == true)
+                {
+                    Destroy(projectiles[i].gameObject);
+
+                    Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+                    _audioManager.PlayExplosionSound();
+
+                    Destroy(gameObject, 0.2f);
+                }
+            }
         }
     }
 }

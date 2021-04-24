@@ -115,19 +115,8 @@ public class Projectile : MonoBehaviour
         _isEnemyLaser = true;
     }
 
-    public void IsNotEnemyLaser()
-    {
-        _isEnemyLaser = false;
-    }
-
     public bool GetIsEnemyLaser()
     {
-        return _isEnemyLaser;
-    }
-
-    public bool SetIsEnemyLaser(bool isEnemyLaser)
-    {
-        _isEnemyLaser = isEnemyLaser;
         return _isEnemyLaser;
     }
 
@@ -141,10 +130,5 @@ public class Projectile : MonoBehaviour
 
             Destroy(gameObject);
         }
-    }
-
-    public ProjectileType GetProjectileType()
-    {
-        return _type;
     }
 }

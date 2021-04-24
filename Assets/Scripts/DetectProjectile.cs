@@ -15,7 +15,6 @@ public class DetectProjectile : MonoBehaviour
     {
         _movement.SetIsSwitching(true);
         _movement.SetMovementType(EnemyMovementType.Juke);
-
     }
 
     private void OnTriggerExit2D(Collider2D other)
