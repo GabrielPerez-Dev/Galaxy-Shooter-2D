@@ -52,6 +52,15 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnAsteroidRoutine());
     }
 
+    private void FixedUpdate()
+    {
+        Debug.Log("Enemies Left: " + _enemiesLeftInWave);
+        if (_enemiesLeftInWave == -1)
+        {
+            _enemiesLeftInWave = 0;
+        }
+    }
+
     private void StartNextWave()
     {
         _currentWave++;
@@ -71,7 +80,8 @@ public class SpawnManager : MonoBehaviour
         }
 
         _totalEnemiesInCurrentWave = _waves[_currentWave].GetNumberOfEnemiesPerWave();
-        _enemiesLeftInWave = 0;
+        if(_enemiesLeftInWave == 0)
+            _enemiesLeftInWave = 0;
         _enemiesSpawned = 0;
 
         StartCoroutine(SpawnEnemyRoutine());
@@ -221,10 +231,16 @@ public class SpawnManager : MonoBehaviour
 
     public void EnemyDefeated()
     {
-        _enemiesLeftInWave--;
+        if(_enemiesLeftInWave > -1)
+        {
+            _enemiesLeftInWave--;
+            if (_enemiesLeftInWave == 0)
+                _enemiesLeftInWave = 0;
+        }
 
         if(_enemiesLeftInWave == 0 && _enemiesSpawned == _totalEnemiesInCurrentWave)
         {
+            //_enemiesSpawned = _totalEnemiesInCurrentWave;
             _gameManager.IsNewWave = true;
             StartNextWave();
         }

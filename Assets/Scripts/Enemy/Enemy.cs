@@ -108,11 +108,12 @@ public abstract class Enemy : MonoBehaviour
             _player.AddScore(_givePoints);
         }
 
+        _spawnManager.EnemyDefeated();
         _isDead = true;
         _collider.enabled = false;
         _movement.Speed = 1f;
         _audioManager.PlayExplosionSound();
-        _spawnManager.EnemyDefeated();
+
         Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject, 0.2f);
     }

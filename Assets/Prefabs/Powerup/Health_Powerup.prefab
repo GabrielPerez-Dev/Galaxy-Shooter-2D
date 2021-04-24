@@ -130,7 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _powerupType: 4
   _explosionPrefab: {fileID: 2650851927687773958, guid: 378c907d198840e4fa37a825f300b701, type: 3}
-  _spawnRate: 4
+  _spawnRate: 3.5
   _speed: 4
 --- !u!58 &8618485119402068708
 CircleCollider2D:

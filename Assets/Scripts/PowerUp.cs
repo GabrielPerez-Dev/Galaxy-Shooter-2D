@@ -95,7 +95,7 @@ public class PowerUp : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (other.gameObject.CompareTag("Enemy Projectile"))
+        if (other.gameObject.CompareTag("Enemy Projectile") && !_player.IsPickingUpPowerUp())
         {
             Projectile[] projectiles = other.GetComponents<Projectile>();
             for (int i = 0; i < projectiles.Length; i++)
