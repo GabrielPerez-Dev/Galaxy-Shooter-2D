@@ -3,31 +3,33 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] private EnemyMovementType _enemyMovementType = EnemyMovementType.Default;
-    [SerializeField] private float _speed = 4f;
-    [SerializeField] private Transform[] _bossPositions = null;
-    [SerializeField] private float _startWaitTime = 0f;
+    [SerializeField] private EnemyMovementType  _enemyMovementType  = EnemyMovementType.Default;
+    [SerializeField] private float              _speed              = 4f;
+    [SerializeField] private Transform[]        _bossPositions      = null;
+    [SerializeField] private float              _startWaitTime      = 0f;
 
-    private Transform _target = null;
-    private Vector3 _right = Vector3.right;
-    private Vector3 _left = Vector3.left;
+    private Transform   _target = null;
+    private Vector3     _right  = Vector3.right;
+    private Vector3     _left   = Vector3.left;
 
-    private int randomSide = 0;
-    private int _randomPoint = 0;
-    private float _switchSideRate = 0f;
-    private float _minSeconds = 2f;
-    private float _maxSeconds = 3f;
-    private float _waitTime = 0f;
-    private float _chanceToChangeDirection = 0.005f;
+    private int     _randomSide                 = 0;
+    private int     _randomPoint                = 0;
+    private int     _randomSideJuke             = 0;
+    private float   _switchSideRate             = 0f;
+    private float   _minSeconds                 = 2f;
+    private float   _maxSeconds                 = 3f;
+    private float   _waitTime                   = 0f;
+    private float   _chanceToChangeDirection    = 0.005f;
 
-    private bool _canSwitch = false;
-    private bool _isHovering = false;
-    [SerializeField] private bool _isPatrolling = false;
-    private bool _isAggressive = false;
-    private bool _isLeftRight = false;
+    private bool _canSwitch     = false;
+    private bool _isHovering    = false;
+    private bool _isPatrolling  = false;
+    private bool _isAggressive  = false;
+    private bool _isLeftRight   = false;
+    private bool _isSwitching   = false;
 
-    private Player _player = null;
-    private Enemy _enemy = null;
+    private Player  _player     = null;
+    private Enemy   _enemy      = null;
 
     public float Speed
     {
@@ -74,6 +76,11 @@ public class EnemyMovement : MonoBehaviour
     private void Update()
     {
         Movement();
+
+        if (!_isSwitching)
+        {
+            _randomSideJuke = Random.Range(1, 3);
+        }
     }
 
     private void Movement()
@@ -87,13 +94,13 @@ public class EnemyMovement : MonoBehaviour
         {
             if (!_canSwitch)
             {
-                randomSide = Random.Range(1, 3);
+                _randomSide = Random.Range(1, 3);
                 _canSwitch = true;
             }
 
-            if (randomSide == 1)
+            if (_randomSide == 1)
                 transform.Translate((Vector3.down + _right).normalized * _speed * Time.deltaTime);
-            else if (randomSide == 2)
+            else if (_randomSide == 2)
                 transform.Translate((Vector3.down + _left).normalized * _speed * Time.deltaTime);
         }
         
@@ -229,6 +236,20 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
+        if(_enemyMovementType == EnemyMovementType.Juke)
+        {
+            if(_randomSideJuke == 1)
+            {
+                if(_isSwitching)
+                    transform.Translate((Vector3.right + Vector3.down) * (_speed + 1) * Time.deltaTime);
+            }
+            else if(_randomSideJuke == 2)
+            {
+                if(_isSwitching)
+                    transform.Translate((Vector3.left + Vector3.down) * (_speed + 1) * Time.deltaTime);
+            }
+        }
+
         if (transform.position.y < -8f && _enemy.GetEnemyType() != EnemyType.FinalBoss)
         {
             if (_player.IsDead()) return;
@@ -337,5 +358,11 @@ public class EnemyMovement : MonoBehaviour
     public bool IsPatrolling()
     {
         return _isPatrolling;
+    }
+
+    public bool SetIsSwitching(bool isSwitching)
+    {
+        _isSwitching = isSwitching;
+        return _isSwitching;
     }
 }

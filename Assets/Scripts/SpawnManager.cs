@@ -62,8 +62,6 @@ public class SpawnManager : MonoBehaviour
             var enemies = GameObject.FindGameObjectsWithTag("Enemy");
             for (int i = 0; i < enemies.Length; i++)
             {
-                _audioManager.PlayDroneExplosionSound();
-                
                 Destroy(enemies[i].gameObject);
             }
 

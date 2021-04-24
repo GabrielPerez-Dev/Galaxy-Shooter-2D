@@ -7,4 +7,5 @@
     Drone,
     Aggressor,
     FinalBoss,
+    InfantryVariant,
 }

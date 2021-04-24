@@ -115,6 +115,22 @@ public class Projectile : MonoBehaviour
         _isEnemyLaser = true;
     }
 
+    public void IsNotEnemyLaser()
+    {
+        _isEnemyLaser = false;
+    }
+
+    public bool GetIsEnemyLaser()
+    {
+        return _isEnemyLaser;
+    }
+
+    public bool SetIsEnemyLaser(bool isEnemyLaser)
+    {
+        _isEnemyLaser = isEnemyLaser;
+        return _isEnemyLaser;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && _isEnemyLaser)
