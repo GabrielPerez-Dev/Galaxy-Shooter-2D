@@ -14,8 +14,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI    _missleText         = null;
     [SerializeField] private TextMeshProUGUI    _victoryText        = null;
     [SerializeField] private Image              _livesImg           = null;
+    [SerializeField] private Image              _shieldsImg         = null;
     [SerializeField] private Image              _thrusterChargeImg  = null;
     [SerializeField] private Sprite[]           _livesSprites       = null;
+    [SerializeField] private Sprite[]           _shieldsSprites     = null;
     [SerializeField] private GameObject         _pausePanel         = null;
 
     private float       _thrusterFill   = 0f;
@@ -68,6 +70,7 @@ public class UIManager : MonoBehaviour
     {
         _scoreText.text = "Score: " + _player.GetScore().ToString();
         _livesImg.sprite = _livesSprites[_player.GetLives()];
+        _shieldsImg.sprite = _shieldsSprites[_player.GetShields()];
         _ammoText.text = _player.GetAmmo().ToString() + " / " + _player.GetMaxAmmo().ToString();
         _missleText.text = _player.GetMissleCount().ToString() + " / " + _player.GetMaxMissile().ToString();
 

@@ -530,6 +530,11 @@ public class Player : MonoBehaviour
         return _lives;
     }
 
+    public int GetShields()
+    {
+        return _shieldStrength;
+    }
+
     public int GetMissleCount()
     {
         return _missleCount;
