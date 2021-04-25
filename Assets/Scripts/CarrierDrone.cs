@@ -9,12 +9,9 @@ public class CarrierDrone : Enemy
 
     protected override void OnAttack()
     {
-        //When it comes close to the player
-        //speed up
-        //self-destruct
         if (_player == null)
         {
-            Damage();
+            DamageDrone();
         }
 
         if (_player != null)
@@ -35,18 +32,18 @@ public class CarrierDrone : Enemy
         {
             _player.Damage(1);
             _player.AddScore(-15);
-            Damage();
+            DamageDrone();
         }
 
         if (other.CompareTag("Projectile"))
         {
             Destroy(other.gameObject);
             _player.AddScore(15);
-            Damage();
+            DamageDrone();
         }
     }
 
-    private void Damage()
+    public void DamageDrone()
     {
         Instantiate(_explosionDronePrefab, transform.position, Quaternion.identity);
         _audioManager.PlayDroneExplosionSound();
@@ -58,6 +55,6 @@ public class CarrierDrone : Enemy
         _movement.Speed = 5f;
         yield return new WaitForSeconds(0.4f);
 
-        Damage();
+        DamageDrone();
     }
 }

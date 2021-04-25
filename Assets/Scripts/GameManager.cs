@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private UIManager _uiManager = null;
     private bool isPause = false;
     private bool _isGameOver = false;
+    private bool _wonGame = false;
 
     public bool IsNewScene 
     { 
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && _isGameOver)
+        if (Input.GetKeyDown(KeyCode.R) && _isGameOver || _wonGame)
         {
             RestartScene();
         }
@@ -62,6 +63,11 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver()
+    {
+        _isGameOver = true;
+    }
+
+    public void WonGame()
     {
         _isGameOver = true;
     }

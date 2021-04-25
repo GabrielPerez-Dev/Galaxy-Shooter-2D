@@ -128,7 +128,7 @@ public class EnemyMovement : MonoBehaviour
         {
             if (_target == null) return;
 
-            if (Vector3.Distance(transform.position, _target.position) > 1f)
+            if (Vector3.Distance(transform.position, _target.position) > .5f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
             }  
@@ -250,7 +250,7 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
-        if (transform.position.y < -8f && _enemy.GetEnemyType() != EnemyType.FinalBoss)
+        if (transform.position.y < -8f && _enemy.GetEnemyType() != EnemyType.FinalBoss && _enemy.GetEnemyType() != EnemyType.Carrier)
         {
             if (_player.IsDead()) return;
             if (_enemy.GetLives() > 1)
@@ -261,9 +261,11 @@ public class EnemyMovement : MonoBehaviour
             float randomXposition = Random.Range(-11, 11);
             transform.position = new Vector3(randomXposition, 8f, 0);
         }
-        else if(transform.position.y < -10.3f && _enemy.GetEnemyType() == EnemyType.Carrier)
+        
+        if(transform.position.y < -11f && _enemy.GetEnemyType() == EnemyType.Carrier)
         {
-            Destroy(gameObject);
+            float randomXposition = Random.Range(-11, 11);
+            transform.position = new Vector3(randomXposition, 10.6f, 0);
         }
 
         EnemyHorizontalScreenWrap();

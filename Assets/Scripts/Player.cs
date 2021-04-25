@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     [Header("Lives and Score Properties")]
+    [SerializeField] private Collider2D     _collider           = null;
     [SerializeField] private int            _lives              = 3;
     [SerializeField] private int            _score              = 0;
 
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject[]   _enginePrefabs      = null;
 
     [Header("Thruster Properties")]
+    [SerializeField] private Image          _thrusterBarImg         = null;
     [SerializeField] private float          _thrustCharge           = 0f;
     [SerializeField] private float          _thrustMaxCharge        = 20f;
     [SerializeField] private float          _thrusterDepleteRate    = 0.05f;
@@ -50,7 +53,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer  _shieldRenderer = null;
     private AudioManager    _audioManager   = null;
     private SpawnManager    _spawnManager   = null;
-    private Flash         _flashDamage    = null;
+    private Flash           _flashDamage    = null;
     private CameraShake     _cameraShake    = null;
     private Vector3         _movement       = Vector3.zero;
     private Color           _tempColor      = Color.clear;
@@ -186,7 +189,7 @@ public class Player : MonoBehaviour
             FireProjectile();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && Time.time > _canFire && _isEatThisActive)
+        if (Input.GetKeyDown(KeyCode.F) && Time.time > _canFire && _isEatThisActive)
         {
             FireMissle();
         }
@@ -204,6 +207,7 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && Time.time > _canThrust && _thrustCharge > 0 && !_isSpeedNegateActive)
         {
             _isThrusting = true;
+            _thrusterBarImg.gameObject.SetActive(true);
             Thrusting();
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift) || _isSpeedNegateActive)
@@ -229,9 +233,15 @@ public class Player : MonoBehaviour
 
     private void ThrusterRegeneration()
     {
-        if (!_isThrusting && _thrustCharge < _thrustMaxCharge)
+        if (!_isThrusting && _thrustCharge <= _thrustMaxCharge)
         {
             _thrustCharge += _thrusterRegenRate;
+        }
+
+        if (_thrustCharge >= _thrustMaxCharge)
+        {
+            _thrustCharge = _thrustMaxCharge;
+            _thrusterBarImg.gameObject.SetActive(false);
         }
     }
 
@@ -258,6 +268,7 @@ public class Player : MonoBehaviour
         _missleCount -= 1;
 
         var missileInstance = Instantiate(_misslePrefab, transform.position, Quaternion.identity);
+        _audioManager.PlayMissileSound();
         Destroy(missileInstance.gameObject, 10f);
     }
 
@@ -347,13 +358,20 @@ public class Player : MonoBehaviour
 
         if (_isThrusting)
         {
-            transform.Translate(_movement.normalized * (_speed + _thrustSpeed) * Time.deltaTime);
+            transform.Translate(_movement.normalized  * (_speed + _thrustSpeed) * Time.deltaTime);
         }
         else if(!_isThrusting)
         {
             transform.Translate(_movement.normalized * _speed * Time.deltaTime);
         }
 
+    }
+
+    private IEnumerator InvincibilityRoutine()
+    {
+        _collider.enabled = false;
+        yield return new WaitForSeconds(.6f);
+        _collider.enabled = true;
     }
 
     public void Damage(int damageAmount)
@@ -363,6 +381,7 @@ public class Player : MonoBehaviour
         if (_isShieldActive)
         {
             _shieldStrength--;
+            _audioManager.PlayShieldDamageSound();
 
             if(_shieldStrength == 0)
             {
@@ -376,6 +395,8 @@ public class Player : MonoBehaviour
         _flashDamage.WhenHit();
 
         _lives -= damageAmount;
+
+        StartCoroutine(InvincibilityRoutine());
 
         if (_lives == 2)
             _enginePrefabs[0].SetActive(true);
@@ -535,7 +556,7 @@ public class Player : MonoBehaviour
         return _shieldStrength;
     }
 
-    public int GetMissleCount()
+    public int GetMissileCount()
     {
         return _missleCount;
     }

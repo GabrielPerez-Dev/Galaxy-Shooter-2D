@@ -52,9 +52,8 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnAsteroidRoutine());
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        Debug.Log("Enemies Left: " + _enemiesLeftInWave);
         if (_enemiesLeftInWave == -1)
         {
             _enemiesLeftInWave = 0;
@@ -63,25 +62,28 @@ public class SpawnManager : MonoBehaviour
 
     private void StartNextWave()
     {
+        if (_stopSpawning) return;
+
         _currentWave++;
 
         if (_currentWave > _totalWaves)
         {
-            _uiManager.VictoryTextActive();
+            _uiManager.WonGameSequence();
+
             var enemies = GameObject.FindGameObjectsWithTag("Enemy");
             for (int i = 0; i < enemies.Length; i++)
             {
                 Destroy(enemies[i].gameObject);
             }
 
-            Time.timeScale = 0;
-
             return;
         }
 
         _totalEnemiesInCurrentWave = _waves[_currentWave].GetNumberOfEnemiesPerWave();
-        if(_enemiesLeftInWave == 0)
+
+        if(_enemiesLeftInWave <= 0)
             _enemiesLeftInWave = 0;
+
         _enemiesSpawned = 0;
 
         StartCoroutine(SpawnEnemyRoutine());
@@ -216,7 +218,7 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(_waitToSpawn);
         }
 
-        while (!_stopSpawning)
+        while (!_stopSpawning && !_gameManager.IsNewWave)
         {
             float randomX = Random.Range(-11, 11);
             Vector3 randonXposition = new Vector3(randomX, 9, 0);
@@ -240,7 +242,6 @@ public class SpawnManager : MonoBehaviour
 
         if(_enemiesLeftInWave == 0 && _enemiesSpawned == _totalEnemiesInCurrentWave)
         {
-            //_enemiesSpawned = _totalEnemiesInCurrentWave;
             _gameManager.IsNewWave = true;
             StartNextWave();
         }
@@ -251,7 +252,7 @@ public class SpawnManager : MonoBehaviour
         _stopSpawning = true;
     }
 
-    public int GetCurrentWave()
+    public int GetCurrentWaveNumber()
     {
         return _currentWave + 1;
     }

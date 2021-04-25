@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI    _sceneStartText     = null;
     [SerializeField] private TextMeshProUGUI    _newWaveText        = null;
     [SerializeField] private TextMeshProUGUI    _ammoText           = null;
-    [SerializeField] private TextMeshProUGUI    _missleText         = null;
+    [SerializeField] private TextMeshProUGUI    _missileText         = null;
     [SerializeField] private TextMeshProUGUI    _victoryText        = null;
     [SerializeField] private Image              _livesImg           = null;
     [SerializeField] private Image              _shieldsImg         = null;
@@ -20,11 +20,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite[]           _shieldsSprites     = null;
     [SerializeField] private GameObject         _pausePanel         = null;
 
-    private float       _thrusterFill   = 0f;
+    private float           _thrusterFill   = 0f;
 
-    private GameManager _gameManager    = null;
-    private SpawnManager _spawnManager = null;
-    private Player      _player         = null;
+    private GameManager     _gameManager    = null;
+    private SpawnManager    _spawnManager   = null;
+    private Player          _player         = null;
+    private AudioManager    _audioManager   = null;
 
     private void Awake()
     {
@@ -37,6 +38,10 @@ public class UIManager : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
             Debug.Log("SpawnManage is null");
+
+        _audioManager = GameObject.Find("Audio_Manager").GetComponentInChildren<AudioManager>();
+        if (_audioManager == null)
+            Debug.Log("AudioManager is null");
     }
 
     private void Start()
@@ -72,13 +77,13 @@ public class UIManager : MonoBehaviour
         _livesImg.sprite = _livesSprites[_player.GetLives()];
         _shieldsImg.sprite = _shieldsSprites[_player.GetShields()];
         _ammoText.text = _player.GetAmmo().ToString() + " / " + _player.GetMaxAmmo().ToString();
-        _missleText.text = _player.GetMissleCount().ToString() + " / " + _player.GetMaxMissile().ToString();
+        _missileText.text = _player.GetMissileCount().ToString() + " / " + _player.GetMaxMissile().ToString();
 
         _thrusterFill = _player.ThrusterCharge / _player.ThrusterMaxCharge;
         if(_thrusterChargeImg != null)
             _thrusterChargeImg.fillAmount = _thrusterFill;
 
-        if(_player.GetLives() == 0)
+        if(_player.GetLives() == 0 && _player.IsDead())
         {
             GameOverSequence();
         }
@@ -87,7 +92,16 @@ public class UIManager : MonoBehaviour
     private void GameOverSequence()
     {
         _gameManager.GameOver();
+        _audioManager.PlayGameOverSound();
         _gameOverText.gameObject.SetActive(true);
+        _restartText.gameObject.SetActive(true);
+    }
+
+    public void WonGameSequence()
+    {
+        _gameManager.WonGame();
+        _audioManager.PlayVictoryMusicSound();
+        _victoryText.gameObject.SetActive(true);
         _restartText.gameObject.SetActive(true);
     }
 
@@ -115,7 +129,7 @@ public class UIManager : MonoBehaviour
 
         _newWaveText.text = "";
         yield return new WaitForSeconds(1f);
-        _newWaveText.text = "Wave " + _spawnManager.GetCurrentWave();
+        _newWaveText.text = "Wave " + _spawnManager.GetCurrentWaveNumber();
         yield return new WaitForSeconds(2f);
 
         _newWaveText.fontSize = 120;

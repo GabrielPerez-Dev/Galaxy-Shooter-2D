@@ -16,5 +16,10 @@ public class Wave
     {
         return _enemies;
     }
+
+    public string GetWaveName()
+    {
+        return _waveName;
+    }
 }
 

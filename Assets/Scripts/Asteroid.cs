@@ -32,6 +32,12 @@ public class Asteroid : MonoBehaviour
     {
         _childObject.transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime);
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+
+        if(transform.position.y < -9f && !_player.IsDead())
+        {
+            var randomX = Random.Range(-8f, 8f);
+            transform.position = new Vector3(randomX, 9f, 0);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

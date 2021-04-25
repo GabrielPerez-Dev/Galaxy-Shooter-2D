@@ -46,6 +46,7 @@ public class EnemyCarrier : Enemy
                 if (_player == null) break;
 
                 Instantiate(_dronePrefab, _spawnLocations[i].position, Quaternion.identity);
+                _audioManager.PlayTargetSound();
             }
         }
     }
